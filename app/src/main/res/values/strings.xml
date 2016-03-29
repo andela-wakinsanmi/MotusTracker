@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Motus Tracker</string>
+    <string name="header_title">Motus Tracker</string>
+    <string name="header_detail">Place, Time and Position Tracker</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
+
 </resources>
