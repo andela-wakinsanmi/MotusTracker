@@ -4,5 +4,7 @@
     <string name="header_detail">Place, Time and Position Tracker</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
+    <string name="title_preferences">Application Settings</string>
+
 
 </resources>
