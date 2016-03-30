@@ -2,7 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <!--
     <group android:checkableBehavior="single">
--->
+-->     <item android:id="@+id/id_home_drawer"
+        android:title="Home"
+    android:icon="@drawable/ic_home_black_24dp">
+    </item>
+    <item android:id="@+id/id_list_drawer"
+        android:title="List Places"
+        android:icon="@drawable/ic_view_list_black_24dp">
+    </item>
         <item android:id="@+id/id_settings_drawer"
             android:title="Settings"
             android:icon="@drawable/ic_settings_black_24dp">

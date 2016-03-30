@@ -19,6 +19,13 @@
             layout="@layout/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_container">
+
+        </FrameLayout>
+
 
     </LinearLayout>
 

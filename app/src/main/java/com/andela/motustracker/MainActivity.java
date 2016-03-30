@@ -1,7 +1,9 @@
 package com.andela.motustracker;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andela.motustracker.helper.AppPreferences;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
+
+    android.support.v4.app.FragmentTransaction fragmentTransaction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         loadPreference();
+        loadHomeFragment();
 
+    }
+
+    private void loadHomeFragment() {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_container, new HomeFragment());
+        fragmentTransaction.commit();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Home");
+        }
     }
 
     @Override
@@ -89,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String valueSet = sharedPreferences.getString("minimumTime", "5");
-        Toast.makeText(this,"time set = " + valueSet, Toast.LENGTH_LONG).show();
-
-
+        //call the timer from here when this happens....
     }
 }

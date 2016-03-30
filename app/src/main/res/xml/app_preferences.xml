@@ -2,8 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="General" >
-        <EditTextPreference android:title="Minimum Time"
-            android:summary="Minimum time necessary for a location to be recorded"
+        <EditTextPreference android:title="Tracking Time"
+            android:summary="5 Minutes"
+            android:id="@+id/id_preferenceTime"
             android:key="minimumTime"
             android:inputType="number"
             android:defaultValue="5"/>

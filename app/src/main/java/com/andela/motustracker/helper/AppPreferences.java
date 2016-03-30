@@ -3,7 +3,9 @@ package com.andela.motustracker.helper;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +48,12 @@ public class AppPreferences extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.app_preferences);
+
+            EditTextPreference editTextPreference = (EditTextPreference) findPreference("minimumTime");
+            String presentValue = PreferenceManager.getDefaultSharedPreferences(
+                    getActivity()).getString("minimumTime", "5");
+            editTextPreference.setSummary(presentValue + " Minutes");
+
         }
     }
 }
