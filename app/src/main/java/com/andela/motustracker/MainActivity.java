@@ -14,12 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andela.motustracker.helper.AppPreferences;
+import com.andela.motustracker.helper.MotusService;
+import com.andela.motustracker.helper.OnHomeButtonClickListener;
+import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnHomeButtonClickListener{
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                     break;
                 }
+                drawerLayout.closeDrawers();
                 return true;
             }
         });
@@ -107,5 +112,23 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String valueSet = sharedPreferences.getString("minimumTime", "5");
         //call the timer from here when this happens....
+    }
+
+    @Override
+    public void startButtonClicked(boolean isButtonOnStart) {
+        //start or stop service
+        if(isButtonOnStart) {
+            //start service
+
+        } else {
+            //stop service
+        }
+    }
+
+
+    //checking play services
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
