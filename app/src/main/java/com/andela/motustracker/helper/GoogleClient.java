@@ -11,11 +11,11 @@ import com.google.android.gms.location.LocationServices;
  */
 public class GoogleClient {
 
-    private GoogleApiClient mGoogleApiClient ;
+    private static GoogleApiClient mGoogleApiClient ;
     private static GoogleClient googleClient;
-    private Context context;
-    private GoogleApiClient.ConnectionCallbacks listener;
-    private GoogleApiClient.OnConnectionFailedListener secondListener;
+    private static Context context;
+    private static GoogleApiClient.ConnectionCallbacks listener;
+    private static GoogleApiClient.OnConnectionFailedListener secondListener;
 
     private GoogleClient(Context context, GoogleApiClient.ConnectionCallbacks listener,
                          GoogleApiClient.OnConnectionFailedListener secondListener) {
@@ -32,15 +32,16 @@ public class GoogleClient {
        return (googleClient == null) ? new GoogleClient(context,listener,secondListener) : googleClient;
     }
 
-    public GoogleApiClient getGoogleApiClient() {
+    public static GoogleApiClient getGoogleApiClient() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(context)
                     .addConnectionCallbacks(listener)
                     .addOnConnectionFailedListener(secondListener)
                     .addApi(LocationServices.API)
                     .build();
+            mGoogleApiClient.connect();
+            return mGoogleApiClient;
         }
-        mGoogleApiClient.connect();
-        return mGoogleApiClient;
+       return mGoogleApiClient;
     }
 }
