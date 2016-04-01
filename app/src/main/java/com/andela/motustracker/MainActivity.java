@@ -1,9 +1,8 @@
 package com.andela.motustracker;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,14 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andela.motustracker.helper.AppPreferences;
-import com.andela.motustracker.helper.MotusService;
+import com.andela.motustracker.helper.GoogleClient;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 
 public class MainActivity extends AppCompatActivity implements OnHomeButtonClickListener{
     Toolbar toolbar;
@@ -131,4 +127,16 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
     protected void onResume() {
         super.onResume();
     }
+
+    public void displaySettings(Status status) {
+        try {
+            // Show the dialog by calling startResolutionForResult(),
+            // and check the result in onActivityResult().
+            status.startResolutionForResult(this, 200);
+        } catch (IntentSender.SendIntentException e) {
+            // Ignore the error.
+        }
+    }
+
+
 }

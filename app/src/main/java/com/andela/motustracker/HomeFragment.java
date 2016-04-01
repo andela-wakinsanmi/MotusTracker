@@ -1,19 +1,18 @@
 package com.andela.motustracker;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.andela.motustracker.helper.MotusService;
+import com.andela.motustracker.service.MotusService;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
+import com.andela.motustracker.service.OnStillReceiver;
 
 
 /**
@@ -60,6 +59,7 @@ public class HomeFragment extends Fragment {
     public void startService() {
         Intent intent = new Intent(getActivity(),MotusService.class);
         getActivity().startService(intent);
+        OnStillReceiver.broadcastIntent(getContext());
     }
 
     public void stopService() {
