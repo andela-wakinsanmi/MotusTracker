@@ -22,7 +22,10 @@
             android:parentActivityName=".MainActivity">
 
         </activity>
-        <service android:name=".helper.MotusService" android:exported="false">
+        <service android:name=".service.MotusService" android:exported="false">
+
+        </service>
+        <service android:name=".model.ActivityRecognitionDetector" android:exported="false">
 
         </service>
         <receiver android:name=".service.OnStillReceiver">
