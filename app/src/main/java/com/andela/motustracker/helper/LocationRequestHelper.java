@@ -1,10 +1,5 @@
 package com.andela.motustracker.helper;
 
-import android.content.Context;
-import android.content.IntentSender;
-
-import com.andela.motustracker.MainActivity;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -19,9 +14,8 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
  * Created by Spykins on 31/03/16.
  */
 public class LocationRequestHelper {
-    private GoogleApiClient mGoogleClient;
     private PendingResult<LocationSettingsResult> result;
-    private boolean mRequestingLocationUpdates;
+    private boolean requestingLocationUpdates;
 
     public LocationRequestHelper(){
     }
@@ -57,19 +51,19 @@ public class LocationRequestHelper {
                         // All location settings are satisfied. The client can
                         // initialize location requests here.
                         //*****************save this in system preference
-                        mRequestingLocationUpdates = true;
+                        requestingLocationUpdates = true;
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
                         //This has been copied to MotusService displaySettings method..use callback
                         //*****************save this in system preference
-                        mRequestingLocationUpdates = false;
+                        requestingLocationUpdates = false;
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
-                        mRequestingLocationUpdates = false;
+                        requestingLocationUpdates = false;
                         break;
                 }
 
@@ -77,7 +71,7 @@ public class LocationRequestHelper {
             }
         });
 
-        return mRequestingLocationUpdates;
+        return requestingLocationUpdates;
     }
 
 

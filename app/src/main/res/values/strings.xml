@@ -6,6 +6,12 @@
     <string name="drawer_close">drawer close</string>
     <string name="title_preferences">Application Settings</string>
     <string name="BUTTON_STATUS">BUTTON_STATUS</string>
+    <string name="service_not_available">No geocoder available</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+    <string name="no_address_found">No location data provided</string>
+    <string name="address_found">Address found</string>
+
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

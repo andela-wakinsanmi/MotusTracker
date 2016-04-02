@@ -51,7 +51,7 @@ public class MotusService extends Service {
         super.onDestroy();
     }
 
-    final class MotusServiceThread implements Runnable,NotifyServiceLocation, NotifyActivityRecognition {
+    final class MotusServiceThread implements Runnable, NotifyActivityRecognition {
         int service_id;
         Context context;
         private ActivityRecognitionDetector activityRecognitionDetector;
@@ -76,20 +76,13 @@ public class MotusService extends Service {
 
         @Override
         public void run() {
-            LocationHandler locationHandler = new LocationHandler(context,this);
             ActivityRecognitionScan activityRecognitionScan = new ActivityRecognitionScan(context);
             activityRecognitionScan.startActivityRecognitionScan();
         }
 
         @Override
-        public void getLocationCallBack(Location location) {
-            Log.d("waleola",  location.getLatitude() + "called here");
-            //check the Activity Recognition
-        }
-
-        @Override
         public void getActivityRecognitionCallBack(Bundle bundle) {
-            Log.d("waleola", "Activity Recognition has changed..");
+            //Log.d("waleola", "Activity Recognition has changed..");
         }
     }
 }

@@ -10,15 +10,11 @@ import com.andela.motustracker.helper.GoogleClient;
 import com.andela.motustracker.helper.NotifyServiceLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
 
     private static final String TAG = "LocationHandler";
@@ -36,7 +32,8 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     }
 
     public synchronized void prepareService() {
-        googleApiClient = GoogleClient.getInstance(context, this, this).getGoogleApiClient();
+        GoogleClient.getInstance(context, this, this);
+        googleApiClient = GoogleClient.getGoogleApiClient();
         LocationRequestHelper locationRequestHelper = new LocationRequestHelper();
         locationRequest = locationRequestHelper.createLocationRequest();
         requestingLocationUpdates = locationRequestHelper.checkUserLocationSettings();
@@ -55,12 +52,14 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         // Once connected with google api, get the location
 
         try {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
         if (currentLocation != null) {
             //callback
+            notifyServiceLocation.getLocationCallBack(currentLocation);
         }
 
         if (requestingLocationUpdates) {
@@ -73,7 +72,7 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         googleApiClient.connect();
     }
 
-    @Override
+   /* @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
         String mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -83,6 +82,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     public void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 googleApiClient, this);
-    }
+    }*/
 
 }

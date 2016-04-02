@@ -1,13 +1,13 @@
 package com.andela.motustracker.helper;
 
 import android.content.Context;
-import android.media.browse.MediaBrowser;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 /**
  * Created by Spykins on 31/03/16.
+ *
  */
 public class GoogleClient {
 
@@ -20,11 +20,11 @@ public class GoogleClient {
     private GoogleClient(Context context, GoogleApiClient.ConnectionCallbacks listener,
                          GoogleApiClient.OnConnectionFailedListener secondListener) {
         this(context);
-        this.secondListener = secondListener;
-        this.listener = listener;
+        GoogleClient.secondListener = secondListener;
+        GoogleClient.listener = listener;
     }
     private GoogleClient(Context context) {
-        this.context = context;
+        GoogleClient.context = context;
     }
 
     public static GoogleClient getInstance(Context context, GoogleApiClient.ConnectionCallbacks listener,

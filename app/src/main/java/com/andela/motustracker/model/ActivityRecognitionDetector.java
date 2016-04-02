@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.andela.motustracker.manager.CountDownManager;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
@@ -13,9 +14,12 @@ import com.google.android.gms.location.DetectedActivity;
 public class ActivityRecognitionDetector  extends IntentService{
 
     private static final String TAG ="ActivityRecognition";
+    private boolean hasStarted;
+    private CountDownManager countDownManager;
 
     public ActivityRecognitionDetector() {
         super(TAG);
+        countDownManager = CountDownManager.getInstance();
     }
 
     @Override
@@ -35,34 +39,44 @@ public class ActivityRecognitionDetector  extends IntentService{
      * When supplied with the integer representation of the activity returns the activity as friendly string
      * @return a friendly string of the
      */
-    private static void getFriendlyName(int detected_activity_type){
+    private void getFriendlyName(int detected_activity_type){
         switch (detected_activity_type ) {
             case DetectedActivity.IN_VEHICLE:
+                countDownManager.cancel();
+                hasStarted = false;
                 Log.d("waleola", "IN_VEHICLE") ;
                 break;
             case DetectedActivity.ON_BICYCLE:
+                hasStarted = false;
+                countDownManager.cancel();
                 Log.d("waleola", "ON_BICYCLE") ;
                 break;
             case DetectedActivity.ON_FOOT:
+                hasStarted = false;
+                countDownManager.cancel();
                 Log.d("waleola", "ON_FOOT") ;
                 break;
 
             case DetectedActivity.RUNNING:
+                hasStarted = false;
+                countDownManager.cancel();
                 Log.d("waleola", "RUNNING") ;
                 break;
-
-            case DetectedActivity.STILL:
-            case DetectedActivity.TILTING:
-                Log.d("waleola", "STILL and TILTING") ;
-                break;
-            case DetectedActivity.UNKNOWN:
-                Log.d("waleola", "UNKNOWN");
-                break;
             case DetectedActivity.WALKING:
+                hasStarted = false;
+                countDownManager.cancel();
                 Log.d("waleola", "WALKING") ;
                 break;
-            default:
-                Log.d("waleola", "default") ;
+            case DetectedActivity.STILL:
+            case DetectedActivity.TILTING:
+                if (!hasStarted) {
+                    countDownManager.start();
+                    hasStarted = true;
+                }
+                Log.d("waleola", "STILL and TILTING") ;
+                break;
+
+
         }
     }
 }
