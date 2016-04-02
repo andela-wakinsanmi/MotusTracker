@@ -1,5 +1,6 @@
 package com.andela.motustracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.andela.motustracker.helper.App;
 import com.andela.motustracker.helper.AppPreferences;
 import com.andela.motustracker.helper.GoogleClient;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        App.setContext(this);
 
         toolbar = (Toolbar) findViewById(R.id.id_toolBar);
         setSupportActionBar(toolbar);
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
             // Ignore the error.
         }
     }
+
 
 
 }
