@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.andela.motustracker.helper.App;
 import com.andela.motustracker.manager.CountDownManager;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -40,32 +41,33 @@ public class ActivityRecognitionDetector  extends IntentService{
      * @return a friendly string of the
      */
     private void getFriendlyName(int detected_activity_type){
+        String activityDetected = null;
         switch (detected_activity_type ) {
             case DetectedActivity.IN_VEHICLE:
                 countDownManager.cancel();
                 hasStarted = false;
-                Log.d("waleola", "IN_VEHICLE") ;
+                activityDetected =  "User in Vehicle";
                 break;
             case DetectedActivity.ON_BICYCLE:
                 hasStarted = false;
                 countDownManager.cancel();
-                Log.d("waleola", "ON_BICYCLE") ;
+                activityDetected =  "User on Bicycle";
                 break;
             case DetectedActivity.ON_FOOT:
                 hasStarted = false;
                 countDownManager.cancel();
-                Log.d("waleola", "ON_FOOT") ;
+                activityDetected =  "User on Foot";
                 break;
 
             case DetectedActivity.RUNNING:
                 hasStarted = false;
                 countDownManager.cancel();
-                Log.d("waleola", "RUNNING") ;
+                activityDetected =  "User is Running";
                 break;
             case DetectedActivity.WALKING:
                 hasStarted = false;
                 countDownManager.cancel();
-                Log.d("waleola", "WALKING") ;
+                activityDetected = "User is walking";
                 break;
             case DetectedActivity.STILL:
             case DetectedActivity.TILTING:
@@ -73,10 +75,18 @@ public class ActivityRecognitionDetector  extends IntentService{
                     countDownManager.start();
                     hasStarted = true;
                 }
-                Log.d("waleola", "STILL and TILTING") ;
+                activityDetected = "User is standing still";
                 break;
-
-
         }
+
+        sendBroadcast(activityDetected);
+    }
+
+
+    private void sendBroadcast(String activityDetected) {
+        Intent intent = new Intent();
+        intent.setAction("com.andela.motustracker.DETECTED_ACTIVITY");
+        intent.putExtra("ectivityDetected", activityDetected);
+        App.getContext().sendBroadcast(intent);
     }
 }

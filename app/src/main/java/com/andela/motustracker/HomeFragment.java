@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.andela.motustracker.service.MotusService;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
-import com.andela.motustracker.service.AddressReceiver;
 
 import org.w3c.dom.Text;
 
@@ -28,6 +27,7 @@ public class HomeFragment extends Fragment{
     static TextView latitudeText;
     static TextView longitudeText;
     static TextView address;
+    static TextView activityDetected;
     BroadcastReceiver receiver;
     boolean isButtonOnStart = true;
     OnHomeButtonClickListener onHomeButtonClickListener;
@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment{
         latitudeText = (TextView)view.findViewById(R.id.id_userLatitudeText);
         longitudeText = (TextView)view.findViewById(R.id.id_userLongititudeText);
         address = (TextView)view.findViewById(R.id.id_userAddress);
+        activityDetected = (TextView) view.findViewById(R.id.activityDetetcted);
 
         button = (Button) view.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +71,6 @@ public class HomeFragment extends Fragment{
     public void startService() {
         Intent intent = new Intent(getActivity(),MotusService.class);
         getActivity().startService(intent);
-        AddressReceiver.broadcastIntent(getContext());
     }
 
     public void stopService() {
@@ -126,10 +126,17 @@ public class HomeFragment extends Fragment{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("waleola","***********onReceive");
             latitudeText.setText(intent.getStringExtra("latitude"));
             longitudeText.setText(intent.getStringExtra("longitude"));
             address.setText(intent.getStringExtra("address"));
+        }
+    }
+
+    public static class ReceiveDetectedActivtyBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            activityDetected.setText(intent.getStringExtra("ectivityDetected"));
         }
     }
 }

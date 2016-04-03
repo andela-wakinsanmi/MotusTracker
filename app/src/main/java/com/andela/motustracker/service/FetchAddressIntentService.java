@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.andela.motustracker.R;
+import com.andela.motustracker.helper.App;
 import com.andela.motustracker.helper.Constants;
 
 import java.io.IOException;
@@ -23,11 +24,12 @@ import java.util.Locale;
  */
 public class FetchAddressIntentService extends IntentService {
     private static final String TAG = "FetchAddress";
+    private Location location;
     protected ResultReceiver resultReceiver;
+
 
     public FetchAddressIntentService() {
         super(TAG);
-        Log.d("waleola", "Called FetchAddressIntentService");
     }
 
     @Override
@@ -37,7 +39,7 @@ public class FetchAddressIntentService extends IntentService {
         String errorMessage = "";
 
         // Get the location passed to this service through an extra.
-        Location location = intent.getParcelableExtra(
+        location = intent.getParcelableExtra(
                 Constants.LOCATION_DATA_EXTRA);
         resultReceiver = intent.getParcelableExtra(Constants.RECEIVER);
         List<Address> addresses = null;
@@ -67,7 +69,9 @@ public class FetchAddressIntentService extends IntentService {
                 errorMessage = getString(R.string.no_address_found);
                 Log.e("waleola", errorMessage);
             }
+            sendBroadcast(errorMessage);
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
+
         } else {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
@@ -91,5 +95,14 @@ public class FetchAddressIntentService extends IntentService {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
         resultReceiver.send(resultCode, bundle);
+    }
+
+    private void sendBroadcast(String error) {
+        Intent intent = new Intent();
+        intent.setAction("com.andela.motustracker.CUSTOM_INTENT");
+        intent.putExtra("address", error);
+        intent.putExtra("latitude", String.valueOf(location.getLatitude()));
+        intent.putExtra("longitude", String.valueOf(location.getLongitude()));
+        App.getContext().sendBroadcast(intent);
     }
 }

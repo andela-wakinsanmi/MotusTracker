@@ -40,6 +40,13 @@
             </intent-filter>
 
         </receiver>
+        <receiver android:name=".HomeFragment$ReceiveDetectedActivtyBroadCast">
+            <intent-filter>
+                <action android:name="com.andela.motustracker.DETECTED_ACTIVITY">
+                </action>
+            </intent-filter>
+
+        </receiver>
 
 
 
