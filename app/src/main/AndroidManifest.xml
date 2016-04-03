@@ -33,13 +33,15 @@
         <service
             android:name=".service.FetchAddressIntentService"
             android:exported="false"/>
-        <receiver android:name=".service.OnStillReceiver">
+        <receiver android:name=".HomeFragment$ReceiveBroadcast">
             <intent-filter>
                 <action android:name="com.andela.motustracker.CUSTOM_INTENT">
                 </action>
             </intent-filter>
 
         </receiver>
+
+
 
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

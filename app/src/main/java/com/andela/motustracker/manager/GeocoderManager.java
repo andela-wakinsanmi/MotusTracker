@@ -41,12 +41,35 @@ public class GeocoderManager {
             if (resultCode == Constants.SUCCESS_RESULT) {
                  address = resultData.getString(Constants.RESULT_DATA_KEY);
                 Log.d("waleola",address);
+                sendBroadcast();
+                //I have the Address and Location in this class...
 
-                // *********I have the Address and the Coordiante here
-                //display it in the UI...
             }
 
         }
 
     }
+
+    private void sendBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction("com.andela.motustracker.CUSTOM_INTENT");
+        intent.putExtra("address", address);
+        intent.putExtra("latitude", String.valueOf(location.getLatitude()));
+        intent.putExtra("longitude", String.valueOf(location.getLongitude()));
+        App.getContext().sendBroadcast(intent);
+    }
+
+    /*public void sendResult() {
+        Log.d("waleola","Called SendResult.....");
+
+        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(App.getContext());
+        Intent intent = new Intent(App.getContext(), HomeFragment.class);
+            intent.putExtra("address", address);
+            intent.putExtra("latitude",location.getLatitude());
+            intent.putExtra("longitude", location.getLongitude());
+        broadcaster.sendBroadcast(intent);
+
+        Log.d("waleola", "Called SendResult.....");
+
+    }*/
 }
