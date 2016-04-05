@@ -9,6 +9,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.andela.motustracker.helper.App;
+import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.helper.Constants;
 import com.andela.motustracker.service.FetchAddressIntentService;
 
@@ -22,11 +23,11 @@ public class GeocoderManager {
     private String address;
     public void startIntentService(Location location) {
         this.location = location;
-        Intent intent = new Intent(App.getContext(), FetchAddressIntentService.class);
+        Intent intent = new Intent(AppContext.get(), FetchAddressIntentService.class);
         resultReceiver = new AddressResultReceiver(new Handler());
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        App.getContext().startService(intent);
+        AppContext.get().startService(intent);
     }
 
     @SuppressLint("ParcelCreator")
@@ -56,7 +57,7 @@ public class GeocoderManager {
         intent.putExtra("address", address);
         intent.putExtra("latitude", String.valueOf(location.getLatitude()));
         intent.putExtra("longitude", String.valueOf(location.getLongitude()));
-        App.getContext().sendBroadcast(intent);
+        AppContext.get().sendBroadcast(intent);
     }
 
     /*public void sendResult() {

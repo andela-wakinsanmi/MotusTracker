@@ -8,10 +8,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.andela.motustracker.R;
-import com.andela.motustracker.helper.App;
+import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.helper.Constants;
 
 import java.io.IOException;
@@ -53,21 +52,15 @@ public class FetchAddressIntentService extends IntentService {
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.service_not_available);
-            Log.e("waleola", errorMessage, ioException);
         } catch (IllegalArgumentException illegalArgumentException) {
             // Catch invalid latitude or longitude values.
             errorMessage = getString(R.string.invalid_lat_long_used);
-            Log.e("waleola", errorMessage + ". " +
-                    "Latitude = " + location.getLatitude() +
-                    ", Longitude = " +
-                    location.getLongitude(), illegalArgumentException);
         }
 
         // Handle case where no address was found.
         if (addresses == null || addresses.size()  == 0) {
             if (errorMessage.isEmpty()) {
                 errorMessage = getString(R.string.no_address_found);
-                Log.e("waleola", errorMessage);
             }
             sendBroadcast(errorMessage);
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
@@ -81,7 +74,6 @@ public class FetchAddressIntentService extends IntentService {
             for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
-            Log.i("waleola", getString(R.string.address_found));
 
             deliverResultToReceiver(Constants.SUCCESS_RESULT,
                     TextUtils.join(System.getProperty("line.separator"),
@@ -91,7 +83,6 @@ public class FetchAddressIntentService extends IntentService {
     }
 
     private void deliverResultToReceiver(int resultCode, String message) {
-        Log.d("waleola", "Called deliverResultToReceiver in FetchAddressIntentService ");
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
         resultReceiver.send(resultCode, bundle);
@@ -100,9 +91,9 @@ public class FetchAddressIntentService extends IntentService {
     private void sendBroadcast(String error) {
         Intent intent = new Intent();
         intent.setAction("com.andela.motustracker.CUSTOM_INTENT");
-        intent.putExtra("address", error);
+        intent.putExtra("address", error + "\n check your internet connection");
         intent.putExtra("latitude", String.valueOf(location.getLatitude()));
         intent.putExtra("longitude", String.valueOf(location.getLongitude()));
-        App.getContext().sendBroadcast(intent);
+        AppContext.get().sendBroadcast(intent);
     }
 }

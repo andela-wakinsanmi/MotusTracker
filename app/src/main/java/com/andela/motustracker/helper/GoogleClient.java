@@ -17,9 +17,9 @@ public class GoogleClient {
     private static GoogleApiClient.ConnectionCallbacks listener;
     private static GoogleApiClient.OnConnectionFailedListener secondListener;
 
-    private GoogleClient(Context context, GoogleApiClient.ConnectionCallbacks listener,
+    private GoogleClient(GoogleApiClient.ConnectionCallbacks listener,
                          GoogleApiClient.OnConnectionFailedListener secondListener) {
-        this(context);
+        context = AppContext.get();
         GoogleClient.secondListener = secondListener;
         GoogleClient.listener = listener;
     }
@@ -27,9 +27,9 @@ public class GoogleClient {
         GoogleClient.context = context;
     }
 
-    public static GoogleClient getInstance(Context context, GoogleApiClient.ConnectionCallbacks listener,
+    public static GoogleClient getInstance(GoogleApiClient.ConnectionCallbacks listener,
                                            GoogleApiClient.OnConnectionFailedListener secondListener) {
-       return (googleClient == null) ? new GoogleClient(context,listener,secondListener) : googleClient;
+       return (googleClient == null) ? new GoogleClient(listener,secondListener) : googleClient;
     }
 
     public static GoogleApiClient getGoogleApiClient() {
