@@ -7,18 +7,13 @@ import android.speech.tts.TextToSpeech;
 /**
  * Created by Spykins on 02/04/16.
  */
-public class App extends Application implements TextToSpeech.OnInitListener {
-    private static Context context;
+public class App extends Application {
+
     @Override
-    public void onInit(int status) {
+    public void onCreate() {
+        super.onCreate();
 
+        new AppContext(this);
     }
 
-    public static Context getContext(){
-        return context;
-    }
-
-    public static void setContext(Context mContext) {
-        context = mContext;
-    }
 }

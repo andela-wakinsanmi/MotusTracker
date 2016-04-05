@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        App.setContext(this);
 
         toolbar = (Toolbar) findViewById(R.id.id_toolBar);
         setSupportActionBar(toolbar);
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
                 switch (item.getItemId()) {
                     case R.id.id_settings_drawer :
                         //call the settings App here...
-                        createAppPreference();
+                        //createAppPreference();
                         drawerLayout.closeDrawers();
                     break;
                 }
@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
     private void loadPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String valueSet = sharedPreferences.getString("minimumTime", "5");
+        String valueSet = sharedPreferences.getString("minimumTime", "");
+        Log.e("MOTUS", valueSet);
         //call the timer from here when this happens....
     }
 
