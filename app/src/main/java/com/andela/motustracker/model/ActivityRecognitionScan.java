@@ -23,6 +23,9 @@ public class ActivityRecognitionScan implements GoogleApiClient.ConnectionCallba
 
     public ActivityRecognitionScan(Context context) {
         this.context = context;
+        if (context == null) {
+            Log.e("null context", "true");
+        }
     }
 
     public void startActivityRecognitionScan() {
@@ -56,6 +59,6 @@ public class ActivityRecognitionScan implements GoogleApiClient.ConnectionCallba
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed");
-
     }
+
 }

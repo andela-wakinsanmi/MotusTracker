@@ -2,9 +2,9 @@ package com.andela.motustracker.model;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.andela.motustracker.helper.App;
+import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.manager.CountDownManager;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -30,7 +30,7 @@ public class ActivityRecognitionDetector  extends IntentService{
             DetectedActivity mostProbableActivity = result.getMostProbableActivity();
             int confidence = mostProbableActivity.getConfidence();
             int activityType = mostProbableActivity.getType();
-            if(confidence > 80) {
+            if(confidence > 60) {
                 getFriendlyName(activityType);
             }
        }
@@ -58,7 +58,6 @@ public class ActivityRecognitionDetector  extends IntentService{
                 countDownManager.cancel();
                 activityDetected =  "User on Foot";
                 break;
-
             case DetectedActivity.RUNNING:
                 hasStarted = false;
                 countDownManager.cancel();
@@ -69,14 +68,22 @@ public class ActivityRecognitionDetector  extends IntentService{
                 countDownManager.cancel();
                 activityDetected = "User is walking";
                 break;
-            case DetectedActivity.STILL:
             case DetectedActivity.TILTING:
+                hasStarted = false;
+                countDownManager.cancel();
+                activityDetected = "User is tilting phone";
+                break;
+            case DetectedActivity.UNKNOWN:
+                hasStarted = false;
+                countDownManager.cancel();
+                activityDetected = "unknown";
+                break;
+            default:
                 if (!hasStarted) {
                     countDownManager.start();
                     hasStarted = true;
                 }
                 activityDetected = "User is standing still";
-                break;
         }
 
         sendBroadcast(activityDetected);
@@ -86,7 +93,7 @@ public class ActivityRecognitionDetector  extends IntentService{
     private void sendBroadcast(String activityDetected) {
         Intent intent = new Intent();
         intent.setAction("com.andela.motustracker.DETECTED_ACTIVITY");
-        intent.putExtra("ectivityDetected", activityDetected);
-        App.getContext().sendBroadcast(intent);
+        intent.putExtra("activityDetected", activityDetected);
+        AppContext.get().sendBroadcast(intent);
     }
 }
