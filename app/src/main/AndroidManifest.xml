@@ -47,6 +47,13 @@
             </intent-filter>
 
         </receiver>
+        <receiver android:name=".HomeFragment$ReceiveTimerBroadCast">
+            <intent-filter>
+                <action android:name="com.andela.motustracker.DETECT_TIMER">
+                </action>
+            </intent-filter>
+
+        </receiver>
 
 
 

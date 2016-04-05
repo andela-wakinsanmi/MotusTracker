@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.andela.motustracker.helper.LocationRequestHelper;
-import com.andela.motustracker.helper.GoogleClient;
 import com.andela.motustracker.helper.NotifyServiceLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,9 +31,15 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     }
 
     public synchronized void prepareService() {
-        GoogleClient.getInstance(context, this, this);
-        googleApiClient = GoogleClient.getGoogleApiClient();
-        LocationRequestHelper locationRequestHelper = new LocationRequestHelper();
+        //GoogleClient.getInstance(context, this, this);
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+        //googleApiClient = GoogleClient.getGoogleApiClient();
+        LocationRequestHelper locationRequestHelper = new LocationRequestHelper(googleApiClient);
         locationRequest = locationRequestHelper.createLocationRequest();
         requestingLocationUpdates = locationRequestHelper.checkUserLocationSettings();
     }
@@ -49,8 +54,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void onConnected(Bundle arg0) {
-        // Once connected with google api, get the location
-
         try {
             //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
@@ -65,6 +68,7 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         if (requestingLocationUpdates) {
             //startLocationUpdates();
         }
+        googleApiClient.disconnect();
     }
 
     @Override

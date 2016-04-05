@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.andela.motustracker.helper.App;
+import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.model.CountDownHandler;
 
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,7 @@ public class CountDownManager  {
     private CountDownHandler countDownHandler;
 
     private CountDownManager() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AppContext.get());
         String valueSet = sharedPreferences.getString("minimumTime", "5");
         long longValue = TimeUnit.MINUTES.toMillis(Long.valueOf(valueSet));
         countDownHandler = new CountDownHandler(longValue,1000);
@@ -36,6 +37,7 @@ public class CountDownManager  {
     public void cancel() {
         countDownHandler.cancel();
     }
+
 
 
 }
