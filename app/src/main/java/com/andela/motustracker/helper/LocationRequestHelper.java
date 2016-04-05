@@ -1,5 +1,6 @@
 package com.andela.motustracker.helper;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -16,8 +17,10 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 public class LocationRequestHelper {
     private PendingResult<LocationSettingsResult> result;
     private boolean requestingLocationUpdates;
+    private GoogleApiClient googleApiClient;
 
-    public LocationRequestHelper(){
+    public LocationRequestHelper(GoogleApiClient googleApiClient){
+        this.googleApiClient = googleApiClient;
     }
     public LocationRequest createLocationRequest() {
         //create the location request and set the parameters as shown in this code sample
@@ -31,9 +34,8 @@ public class LocationRequestHelper {
                 .addLocationRequest(mLocationRequest);
 
         //Next check whether the current location settings are satisfied:
-        //mGoogleClient = GoogleClient.getInstance()
-        if(GoogleClient.getGoogleApiClient() != null)
-        result = LocationServices.SettingsApi.checkLocationSettings(GoogleClient.getGoogleApiClient(), builder.build());
+        //if(GoogleClient.getGoogleApiClient() != null)
+        result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
         return mLocationRequest;
     }
 
