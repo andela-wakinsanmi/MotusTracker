@@ -124,7 +124,9 @@ public class HomeFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
             String status = intent.getStringExtra("activityDetected");
-            activityDetected.setText(status);
+            if(activityDetected != null) {
+                activityDetected.setText(status);
+            }
         }
     }
 

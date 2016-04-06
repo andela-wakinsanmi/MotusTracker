@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.andela.motustracker.helper.AppContext;
+import com.andela.motustracker.manager.SharedPreferenceManager;
 import com.andela.motustracker.model.ActivityRecognitionScan;
 
 /**

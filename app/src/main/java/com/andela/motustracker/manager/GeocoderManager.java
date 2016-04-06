@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
-
-import com.andela.motustracker.helper.App;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.helper.Constants;
 import com.andela.motustracker.service.FetchAddressIntentService;
@@ -43,6 +41,7 @@ public class GeocoderManager {
                  address = resultData.getString(Constants.RESULT_DATA_KEY);
                 Log.d("waleola",address);
                 sendBroadcast();
+                addDataToSharedPreference();
                 //I have the Address and Location in this class...
 
             }
@@ -58,6 +57,14 @@ public class GeocoderManager {
         intent.putExtra("latitude", String.valueOf(location.getLatitude()));
         intent.putExtra("longitude", String.valueOf(location.getLongitude()));
         AppContext.get().sendBroadcast(intent);
+    }
+
+    private void addDataToSharedPreference() {
+        //date, latitude, logitude, address
+        SharedPreferenceManager.getInstance().setDate();
+        SharedPreferenceManager.getInstance().setAddress(address);
+        SharedPreferenceManager.getInstance().setLatitude(location.getLatitude());
+        SharedPreferenceManager.getInstance().setLongitude(location.getLongitude());
     }
 
     /*public void sendResult() {

@@ -2,8 +2,6 @@ package com.andela.motustracker.model;
 
 import android.app.IntentService;
 import android.content.Intent;
-
-import com.andela.motustracker.helper.App;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.manager.CountDownManager;
 import com.google.android.gms.location.ActivityRecognitionResult;
@@ -68,17 +66,13 @@ public class ActivityRecognitionDetector  extends IntentService{
                 countDownManager.cancel();
                 activityDetected = "User is walking";
                 break;
-            case DetectedActivity.TILTING:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "User is tilting phone";
-                break;
             case DetectedActivity.UNKNOWN:
                 hasStarted = false;
                 countDownManager.cancel();
                 activityDetected = "unknown";
                 break;
-            default:
+            case DetectedActivity.STILL:
+            case DetectedActivity.TILTING:
                 if (!hasStarted) {
                     countDownManager.start();
                     hasStarted = true;

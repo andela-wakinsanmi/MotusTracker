@@ -53,8 +53,10 @@ public class ActivityRecognitionScan implements GoogleApiClient.ConnectionCallba
 
     @Override
     public void onConnectionSuspended(int i) {
+        Log.d("waleola", "********** onConnectionSuspended");
 
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
