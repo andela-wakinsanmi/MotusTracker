@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created by Spykins on 06/04/16.
  */
 public class DbHandler extends SQLiteOpenHelper {
+    private Double timeSpent;
 
     public DbHandler() {
         super(AppContext.get(), DbConfig.DATABASE_NAME.getRealName(), null, 1);
@@ -27,7 +28,7 @@ public class DbHandler extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + DbConfig.TABLE_NAME.getRealName() + " (" +
                 DbConfig.COLUMN_ID.getRealName() + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DbConfig.COLUMN_ADDRESS.getRealName() + " TEXT, " +
-                DbConfig.COLUMN_DATE.getRealName() + " DATE , " +
+                DbConfig.COLUMN_DATE.getRealName() + " TEXT , " +
                 DbConfig.COLUMN_LATITUDE.getRealName() + " DOUBLE, " +
                 DbConfig.COLUMN_LONGITUDE.getRealName() + " DOUBLE, " +
                 DbConfig.COLUMN_TIMESPENT.getRealName() + " DOUBLE " +
@@ -43,28 +44,35 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     public void insertLocationInDb(LocationData locationData) {
-        ContentValues values = new ContentValues();
-        values.put(DbConfig.COLUMN_DATE.getRealName(), locationData.getDate());
-        values.put(DbConfig.COLUMN_TIMESPENT.getRealName(), locationData.getTimeSpent());
-        values.put(DbConfig.COLUMN_LONGITUDE.getRealName(), locationData.getLongitude());
-        values.put(DbConfig.COLUMN_LATITUDE.getRealName(), locationData.getLatitude());
-        values.put(DbConfig.COLUMN_ADDRESS.getRealName(), locationData.getAddress());
+        if(!hasDataInDb(locationData.getDate(),locationData.getAddress())) {
+            ContentValues values = new ContentValues();
+            values.put(DbConfig.COLUMN_DATE.getRealName(), locationData.getDate());
+            values.put(DbConfig.COLUMN_TIMESPENT.getRealName(), locationData.getTimeSpent());
+            values.put(DbConfig.COLUMN_LONGITUDE.getRealName(), locationData.getLongitude());
+            values.put(DbConfig.COLUMN_LATITUDE.getRealName(), locationData.getLatitude());
+            values.put(DbConfig.COLUMN_ADDRESS.getRealName(), locationData.getAddress());
 
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(DbConfig.TABLE_NAME.getRealName(), null, values);
-        db.close();
+            SQLiteDatabase db = getWritableDatabase();
+            db.insert(DbConfig.TABLE_NAME.getRealName(), null, values);
+            db.close();
+
+        } else {
+            //update value....
+            updateDatabase(locationData.getAddress(),locationData.getTimeSpent());
+        }
+
 
         Log.d("waleola", "called intertIntoDb..in the DbHandler....");
 
     }
 
-    public ArrayList<LocationData> readLocationFromDb() {
+    public Cursor readLocationFromDb() {
         ArrayList<LocationData> allLocationInDb = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
 
         String query = "SELECT * FROM " + DbConfig.TABLE_NAME.getRealName();
         Cursor cursorHandle = db.rawQuery(query, null);
-        cursorHandle.moveToFirst();
+        /*cursorHandle.moveToFirst();
         while (cursorHandle.moveToNext()) {
             String address = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_ADDRESS.getRealName()));
@@ -77,13 +85,12 @@ public class DbHandler extends SQLiteOpenHelper {
             String date = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_LATITUDE.getRealName()));
 
-
             allLocationInDb.add(new LocationData(address, date, latitude, longititude, timeSpent.longValue()));
         }
-        cursorHandle.close();
-        db.close();
+        cursorHandle.close();*/
+        //db.close();
         Log.d("waleola", "called readLocation..in the DbHandler....");
-        return allLocationInDb;
+        return cursorHandle;
     }
 
     public boolean hasDataBase(Context context) {
@@ -108,6 +115,34 @@ public class DbHandler extends SQLiteOpenHelper {
                 DbConfig.COLUMN_LONGITUDE.getRealName() + " = " + "'" + longitude + "' AND " +
                 DbConfig.COLUMN_LATITUDE.getRealName() + " = " + "'" + latitude + "' AND " +
                 DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + "'" + timeSpent + "'";
+        sq.execSQL(query);
+    }
+
+    public boolean hasDataInDb(String date, String address) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM "+DbConfig.TABLE_NAME.getRealName() +
+                " WHERE "+DbConfig.COLUMN_ADDRESS.getRealName() +" = '" + address +"'"+
+                " AND " + DbConfig.COLUMN_DATE.getRealName() + " = '" + date + "'";
+
+        Cursor cursorHandle = db.rawQuery(query, null);
+        if(cursorHandle.getCount() > 0 ) {
+            cursorHandle.moveToFirst();
+            timeSpent = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_TIMESPENT.getRealName()));
+
+            cursorHandle.close();
+            return true;
+        }
+        cursorHandle.close();
+        return false;
+    }
+
+    public void updateDatabase(String address, Double time) {
+        double totalTime = time + timeSpent;
+        SQLiteDatabase sq = getWritableDatabase();
+        String query = "UPDATE " + DbConfig.TABLE_NAME.getRealName() + " " + "SET " +
+                DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + totalTime + " WHERE " +
+                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + address + "'";
         sq.execSQL(query);
     }
 
