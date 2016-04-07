@@ -12,6 +12,9 @@
     <string name="address_found">Address found</string>
     <string name="button_status">button_status</string>
     <string name="button_flag">button_flag</string>
+    <string name="list_by_name">List By Day</string>
+    <string name="list_by_time_spent">List By Time Spent</string>
+
 
     <string name="details_for_db">details_for_database</string>
     <string name="address">address_for_database</string>
@@ -19,10 +22,16 @@
     <string name="date">date_logged</string>
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
+    <string-array name="spinnerDropDown">
+        <item>@string/list_by_name</item>
+        <item>@string/list_by_time_spent</item>
+    </string-array>
 
-
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--<string-array name=“country_names”> 
+    <item>India </item> 
+    <item>Bangladesh </item> 
+    <item>Australia </item> 
+    <string-array>-->
 
 
 </resources>
