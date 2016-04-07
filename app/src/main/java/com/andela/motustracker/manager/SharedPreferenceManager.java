@@ -48,17 +48,17 @@ public class SharedPreferenceManager {
     }
 
     public void setDate() {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String dateFormat = simpleDateFormat.format(date);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(context.getString(R.string.date), new Date().getTime());
+        editor.putString(context.getString(R.string.date), dateFormat.split(" ")[0]);
         editor.apply();
 
     }
 
     public String getDate() {
-
-        Date date = new Date (sharedPreferences.getLong(context.getString(R.string.date), 0));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return simpleDateFormat.format(date);
+        return sharedPreferences.getString(context.getString(R.string.date), " ");
     }
 
     public void setAddress(String address) {
@@ -96,6 +96,5 @@ public class SharedPreferenceManager {
         return new LocationData(getAddress(),getDate(),getLatitude(), getLongitude(),
                 getTimeSpent());
     }
-
 
 }
