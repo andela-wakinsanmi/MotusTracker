@@ -39,7 +39,6 @@ public class GeocoderManager {
 
             if (resultCode == Constants.SUCCESS_RESULT) {
                  address = resultData.getString(Constants.RESULT_DATA_KEY);
-                Log.d("waleola",address);
                 sendBroadcast();
                 addDataToSharedPreference();
                 //I have the Address and Location in this class...

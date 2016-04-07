@@ -50,10 +50,18 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
                 switch (item.getItemId()) {
                     case R.id.id_settings_drawer :
-                        //call the settings App here...
-                        //createAppPreference();
-                        drawerLayout.closeDrawers();
+                        createAppPreference();
                     break;
+                    case R.id.id_home_drawer:
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new HomeFragment());
+                        fragmentTransaction.commit();
+                        break;
+                    case R.id.id_list_drawer :
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new LocationListFragment());
+                        fragmentTransaction.commit();
+                        break;
                 }
                 drawerLayout.closeDrawers();
                 return true;
