@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CountDownManager  {
     private static CountDownManager countDownManager;
-    private CountDownTimer countDownHandler;
+    private CountDownHandler countDownHandler;
     //private boolean isCountingDown = true;
 
     private CountDownManager() {

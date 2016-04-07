@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.andela.motustracker.R;
 import com.andela.motustracker.helper.AppContext;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Spykins on 06/04/16.
  */
@@ -41,8 +43,9 @@ public class DbCursorAdapter extends CursorAdapter {
                 DbConfig.COLUMN_LATITUDE.getRealName()));
         double longitude = cursor.getDouble(cursor.getColumnIndex(
                 DbConfig.COLUMN_LONGITUDE.getRealName()));
-        Double timeSpent = cursor.getDouble(cursor.getColumnIndex(
+        Double timeInMillis = cursor.getDouble(cursor.getColumnIndex(
                 DbConfig.COLUMN_TIMESPENT.getRealName()));
+        String timeSpent = convertMillisToTime(timeInMillis);
         String date = cursor.getString(cursor.getColumnIndex(
                 DbConfig.COLUMN_DATE.getRealName()));
         Log.d("waleola", "Location is " + address);
@@ -52,6 +55,13 @@ public class DbCursorAdapter extends CursorAdapter {
         longitudeTextView.setText(String.valueOf(longitude));
         timeSpentTextView.setText(String.valueOf(timeSpent));
         dateTextView.setText(date);
+    }
+
+    private String convertMillisToTime(double timeInMillis) {
+        long millis = Double.doubleToLongBits(timeInMillis);
+        return String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
 
