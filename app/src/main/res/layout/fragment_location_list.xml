@@ -1,10 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.andela.motustracker.LocationListFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_spinnerView"
+        android:layout_marginBottom="3dp"> </Spinner>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,4 +18,4 @@
 
     </ListView>
 
-</FrameLayout>
+</LinearLayout>
