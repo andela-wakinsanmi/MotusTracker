@@ -2,8 +2,10 @@ package com.andela.motustracker.model;
 
 import android.app.IntentService;
 import android.content.Intent;
+
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.manager.CountDownManager;
+import com.andela.motustracker.manager.SharedPreferenceManager;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
@@ -13,25 +15,25 @@ import com.google.android.gms.location.DetectedActivity;
 public class ActivityRecognitionDetector  extends IntentService{
 
     private static final String TAG ="ActivityRecognition";
-    private boolean hasStarted;
-    private CountDownManager countDownManager;
+    private static boolean hasStarted = false;
+    private CountDownManager countDownManager = CountDownManager.getInstance();
+    private SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance();
 
     public ActivityRecognitionDetector() {
         super(TAG);
-        countDownManager = CountDownManager.getInstance();
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (ActivityRecognitionResult.hasResult(intent)) {
+       // if (ActivityRecognitionResult.hasResult(intent)) {
             ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
             DetectedActivity mostProbableActivity = result.getMostProbableActivity();
             int confidence = mostProbableActivity.getConfidence();
             int activityType = mostProbableActivity.getType();
-            if(confidence > 60) {
+            //if(confidence > 30) {
                 getFriendlyName(activityType);
-            }
-       }
+            //}
+       //}
     }
 
     /**
@@ -40,7 +42,22 @@ public class ActivityRecognitionDetector  extends IntentService{
      */
     private void getFriendlyName(int detected_activity_type){
         String activityDetected = null;
-        switch (detected_activity_type ) {
+        if(detected_activity_type == DetectedActivity.STILL || detected_activity_type == DetectedActivity.TILTING) {
+            activityDetected = "User is standing still";
+            //boolean flag = !sharedPreferenceManager.hasStartedCountDown();
+            if (!ActivityRecognitionDetector.hasStarted) {
+                countDownManager.start();
+                ActivityRecognitionDetector.hasStarted = true;
+                //sharedPreferenceManager.setStartedCountDown(true);
+            }
+
+        } else {
+            activityDetected = "User is moving";
+            ActivityRecognitionDetector.hasStarted = false;
+            //sharedPreferenceManager.setStartedCountDown(false);
+            countDownManager.cancel();
+        }
+        /*switch (detected_activity_type ) {
             case DetectedActivity.IN_VEHICLE:
                 countDownManager.cancel();
                 hasStarted = false;
@@ -78,8 +95,7 @@ public class ActivityRecognitionDetector  extends IntentService{
                     hasStarted = true;
                 }
                 activityDetected = "User is standing still";
-        }
-
+        }*/
         sendBroadcast(activityDetected);
     }
 
