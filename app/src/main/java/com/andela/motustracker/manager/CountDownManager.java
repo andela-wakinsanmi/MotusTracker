@@ -1,6 +1,7 @@
 package com.andela.motustracker.manager;
 
 import android.content.SharedPreferences;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -14,8 +15,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class CountDownManager  {
     private static CountDownManager countDownManager;
-    private CountDownHandler countDownHandler;
-    private boolean isCountingDown = true;
+    private CountDownTimer countDownHandler;
+    //private boolean isCountingDown = true;
 
     private CountDownManager() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AppContext.get());
@@ -26,7 +27,7 @@ public class CountDownManager  {
 
     public static CountDownManager getInstance() {
         if(countDownManager == null) {
-            return new CountDownManager();
+            countDownManager = new CountDownManager();
         }
         return countDownManager;
     }
@@ -34,23 +35,19 @@ public class CountDownManager  {
     public void start() {
         //Check if it has finished oreviously...
 
-        if(!hasTimeInSharedPreference()) {
+        //if(!hasTimeInSharedPreference()) {
+            countDownHandler.cancel();
             Log.d("waleola", "called start..in CountDownManager");
-            if(isCountingDown) {
                 countDownHandler.start();
-                isCountingDown = false;
-            }
-        }
+        //}
     }
 
     public void cancel() {
         //if i cancel, i want to check if i finished and save anything previously...
         //I want to save the data into database... if I have.......
-        isCountingDown = true;
+        //isCountingDown = true;
         countDownHandler.cancel();
         Log.d("waleola", "called cancel..in CountDownManager");
-
-
 
         Long currentTimeStamp = System.currentTimeMillis()/1000;
         if(hasTimeInSharedPreference()) {

@@ -11,6 +11,10 @@ import com.andela.motustracker.helper.NotifyServiceLocation;
 import com.andela.motustracker.manager.GeocoderManager;
 import com.andela.motustracker.manager.SharedPreferenceManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,7 +32,6 @@ public class CountDownHandler extends CountDownTimer implements NotifyServiceLoc
     @Override
     public void onTick(long millisUntilFinished) {
         String time = timeFormatter(millisUntilFinished);
-        Log.d("waleola", "called onTick");
         updateTextViewTime(time);
     }
 
