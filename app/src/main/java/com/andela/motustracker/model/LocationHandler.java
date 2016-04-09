@@ -22,7 +22,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     private Context context;
     private NotifyServiceLocation notifyServiceLocation;
     private LocationRequest locationRequest;
-    private boolean requestingLocationUpdates; //save in sharedPreference
 
     public LocationHandler(Context context, NotifyServiceLocation notifyServiceLocation) {
         this.context = context;
@@ -41,7 +40,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         //googleApiClient = GoogleClient.getGoogleApiClient();
         LocationRequestHelper locationRequestHelper = new LocationRequestHelper(googleApiClient);
         locationRequest = locationRequestHelper.createLocationRequest();
-        requestingLocationUpdates = locationRequestHelper.checkUserLocationSettings();
     }
 
     /**
@@ -57,16 +55,13 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         try {
             //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            Log.d("waleola","Called Onconnected ..");
         } catch (SecurityException e) {
             e.printStackTrace();
         }
         if (currentLocation != null) {
             //callback
             notifyServiceLocation.getLocationCallBack(currentLocation);
-        }
-
-        if (requestingLocationUpdates) {
-            //startLocationUpdates();
         }
         googleApiClient.disconnect();
     }

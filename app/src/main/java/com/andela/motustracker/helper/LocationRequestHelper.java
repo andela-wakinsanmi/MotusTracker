@@ -1,5 +1,8 @@
 package com.andela.motustracker.helper;
 
+import android.content.Intent;
+import android.util.Log;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -36,12 +39,51 @@ public class LocationRequestHelper {
         //Next check whether the current location settings are satisfied:
         //if(GoogleClient.getGoogleApiClient() != null)
         result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                final LocationSettingsStates locationSettingsStates = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.SUCCESS: ..");
+
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        //*****************save this in system preference
+                        requestingLocationUpdates = true;
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.RESOLUTION_REQUIRED: ..");
+
+                        //
+                        Intent intent = new Intent();
+                        intent.setAction("com.andela.motustracker.LOCATION_SETTINGS");
+                        intent.putExtra("status", status);
+                        AppContext.get().sendBroadcast(intent);
+                        // Location settings are not satisfied, but this can be fixed
+                        // by showing the user a dialog.
+                        //This has been copied to MotusService displaySettings method..use callback
+                        //*****************save this in system preference
+                        requestingLocationUpdates = false;
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.RESOLUTION_REQUIRED: ..");
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                        requestingLocationUpdates = false;
+                        break;
+                }
+
+
+            }
+        });
         return mLocationRequest;
     }
 
     //vhanging user Location settings
 
-    public boolean checkUserLocationSettings() {
+  /*  public boolean checkUserLocationSettings() {
 
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
@@ -50,19 +92,29 @@ public class LocationRequestHelper {
                 final LocationSettingsStates locationSettingsStates = result.getLocationSettingsStates();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.SUCCESS: ..");
+
                         // All location settings are satisfied. The client can
                         // initialize location requests here.
-                        //*****************save this in system preference
+                        /*//*****************save this in system preference
                         requestingLocationUpdates = true;
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.RESOLUTION_REQUIRED: ..");
+
+                        //
+                        Intent intent = new Intent();
+                        intent.setAction("com.andela.motustracker.LOCATION_SETTINGS");
+                        intent.putExtra("status", status);
+                        AppContext.get().sendBroadcast(intent);
                         // Location settings are not satisfied, but this can be fixed
                         // by showing the user a dialog.
                         //This has been copied to MotusService displaySettings method..use callback
-                        //*****************save this in system preference
+                        /*//*****************save this in system preference
                         requestingLocationUpdates = false;
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.d("waleola","Called checkUserLocationSettings*** LocationSettingsStatusCodes.RESOLUTION_REQUIRED: ..");
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
                         requestingLocationUpdates = false;
@@ -75,6 +127,6 @@ public class LocationRequestHelper {
 
         return requestingLocationUpdates;
     }
-
+*/
 
 }

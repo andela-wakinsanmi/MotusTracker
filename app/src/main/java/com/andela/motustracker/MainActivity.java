@@ -1,5 +1,7 @@
 package com.andela.motustracker;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
+    private static Activity activity;
 
     android.support.v4.app.FragmentTransaction fragmentTransaction;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        activity = this;
         toolbar = (Toolbar) findViewById(R.id.id_toolBar);
         setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.id_drawer_layout);
@@ -140,14 +143,25 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
         super.onResume();
     }
 
-    public void displaySettings(Status status) {
-        try {
-            // Show the dialog by calling startResolutionForResult(),
-            // and check the result in onActivityResult().
-            status.startResolutionForResult(this, 200);
-        } catch (IntentSender.SendIntentException e) {
-            // Ignore the error.
+    public static class ReceiveLocationSettings extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("waleola", "called MainActivity" );
+
+            Status status = intent.getParcelableExtra("status");
+            try {
+                // Show the dialog by calling startResolutionForResult(),
+                // and check the result in onActivityResult().
+                status.startResolutionForResult(MainActivity.activity, 200);
+            } catch (IntentSender.SendIntentException e) {
+                // Ignore the error.
+            }
+
         }
+    }
+    public void displaySettings(Status status) {
+
     }
 
 
