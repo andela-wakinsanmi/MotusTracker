@@ -12,6 +12,9 @@ import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.model.LocationData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Spykins on 06/04/16.
@@ -61,18 +64,17 @@ public class DbHandler extends SQLiteOpenHelper {
             updateDatabase(locationData.getAddress(),locationData.getTimeSpent());
         }
 
-
-        Log.d("waleola", "called intertIntoDb..in the DbHandler....");
-
     }
 
-    public Cursor readLocationFromDb() {
+    public ArrayList<LocationData> readLocationFromDb() {
         ArrayList<LocationData> allLocationInDb = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
 
-        String query = "SELECT * FROM " + DbConfig.TABLE_NAME.getRealName();
+        String query = "SELECT * FROM " + DbConfig.TABLE_NAME.getRealName() + " ORDER BY " +
+                "  DATE(" +DbConfig.COLUMN_DATE.getRealName()  + ")  DESC";
+
         Cursor cursorHandle = db.rawQuery(query, null);
-        /*cursorHandle.moveToFirst();
+        cursorHandle.moveToFirst();
         while (cursorHandle.moveToNext()) {
             String address = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_ADDRESS.getRealName()));
@@ -83,29 +85,13 @@ public class DbHandler extends SQLiteOpenHelper {
             Double timeSpent = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_TIMESPENT.getRealName()));
             String date = cursorHandle.getString(cursorHandle.getColumnIndex(
-                    DbConfig.COLUMN_LATITUDE.getRealName()));
+                    DbConfig.COLUMN_DATE.getRealName()));
 
             allLocationInDb.add(new LocationData(address, date, latitude, longititude, timeSpent.longValue()));
         }
-        cursorHandle.close();*/
-        //db.close();
-        Log.d("waleola", "called readLocation..in the DbHandler....");
-        return cursorHandle;
-    }
-
-    public boolean hasDataBase(Context context) {
-        SQLiteDatabase checkDB = null;
-        try {
-            String db_full_path = context.getDatabasePath(
-                    DbConfig.DATABASE_NAME.getRealName()).getPath();
-
-            checkDB = SQLiteDatabase.openDatabase(db_full_path, null,
-                    SQLiteDatabase.OPEN_READONLY);
-            checkDB.close();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
-        return checkDB != null;
+        cursorHandle.close();
+        db.close();
+        return allLocationInDb;
     }
 
     public void deleteFromDatabase(String address, double longitude, double latitude, double timeSpent) {
@@ -144,6 +130,51 @@ public class DbHandler extends SQLiteOpenHelper {
                 DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + totalTime + " WHERE " +
                 DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + address + "'";
         sq.execSQL(query);
+    }
+
+    public ArrayList<LocationData> readListBaseOnLocation() {
+        HashMap<String,LocationData> addressAndLocationInfo = new HashMap<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + DbConfig.TABLE_NAME.getRealName();
+        Cursor cursorHandle = db.rawQuery(query, null);
+
+        cursorHandle.moveToFirst();
+        while (cursorHandle.moveToNext()) {
+            String address = cursorHandle.getString(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_ADDRESS.getRealName()));
+            double latitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_LATITUDE.getRealName()));
+            double longititude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_LONGITUDE.getRealName()));
+            Double timeSpent = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_TIMESPENT.getRealName()));
+            String date = cursorHandle.getString(cursorHandle.getColumnIndex(
+                    DbConfig.COLUMN_DATE.getRealName()));
+            if(addressAndLocationInfo.containsKey(address)) {
+                LocationData locationData = addressAndLocationInfo.get(address);
+                Double previousTimeSpent = locationData.getTimeSpent();
+                long newTime = previousTimeSpent.longValue() + timeSpent.longValue();
+                locationData.setTimeSpent(newTime);
+                Log.d("waleola",  "readListBaseOnLocation() previousTime = " + previousTimeSpent + " NewTimw " + newTime);
+                //locationData.upDateTimeSpent(timeSpent);
+                addressAndLocationInfo.put(address,locationData);
+            } else {
+                LocationData locationData = new LocationData(address,date,latitude,
+                        longititude,timeSpent.longValue());
+                addressAndLocationInfo.put(address,locationData);
+            }
+
+        }
+        cursorHandle.close();
+        db.close();
+
+
+        ArrayList<LocationData> list = new ArrayList<>();
+        for(Map.Entry<String, LocationData> entry : addressAndLocationInfo.entrySet()){
+            list.add(entry.getValue());
+        }
+
+        return list;
     }
 
 }
