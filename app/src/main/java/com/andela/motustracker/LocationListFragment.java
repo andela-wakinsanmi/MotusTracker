@@ -6,21 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
-import com.andela.motustracker.dbParser.DbCursorAdapter;
+import com.andela.motustracker.dbParser.DbListAdapter;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.manager.DbManager;
 import com.andela.motustracker.model.LocationData;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -29,6 +26,7 @@ import java.util.List;
 public class LocationListFragment extends Fragment {
     private Spinner spinner;
     private ListView listView;
+    private DbListAdapter listAdapter;
 
 
     public LocationListFragment() {
@@ -46,6 +44,11 @@ public class LocationListFragment extends Fragment {
         SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(AppContext.get(),
                 R.array.spinnerDropDown, R.layout.spinner_custom_view);
         spinner.setAdapter(spinnerAdapter);
+        listView = (ListView) view.findViewById(R.id.id_frag_listView);
+        listAdapter = new DbListAdapter(getContext(),R.layout.fragment_location_list,
+                R.id.id_userLatitudeText, new DbManager().readDataFromDb());
+        listView.setAdapter(listAdapter);
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -54,10 +57,16 @@ public class LocationListFragment extends Fragment {
                 //final String ad = getResources().getString(R.string.list_by_name);
                 switch (item) {
                     case "List By Day":
-                        //List location by day in the ListView
+                        listAdapter.clear();
+                        listAdapter.addNewDataToList(new DbManager().readDataFromDb());
+                        listAdapter.notifyDataSetChanged();
                         break;
                     case "List By Time Spent":
                         //List location by time spent in the ListView
+                        listAdapter.clear();
+                        ArrayList<LocationData> data = new DbManager().readListBaseOnLocation();
+                        listAdapter.addNewDataToList(data);
+                        listAdapter.notifyDataSetChanged();
                         break;
                 }
 
@@ -71,9 +80,7 @@ public class LocationListFragment extends Fragment {
             }
         });
 
-        listView = (ListView) view.findViewById(R.id.id_frag_listView);
-        DbCursorAdapter adapter = new DbCursorAdapter(new DbManager().readDataFromDb(),0);
-        listView.setAdapter(adapter);
+
         return view;
     }
 
