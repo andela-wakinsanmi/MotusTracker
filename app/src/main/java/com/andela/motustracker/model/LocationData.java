@@ -8,14 +8,15 @@ public class LocationData {
     private double longitude;
     private double latitude;
     private String  date;
-    private double timeSpent;
+    private Double timeSpent;
 
-    public LocationData(String address, String date, double latitude, double longitude, long timeSpent) {
+    public LocationData(String address, String date, double latitude, double longitude, Long timeSpent) {
         this.address = address;
         this.date = date;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.timeSpent = Double.doubleToLongBits(timeSpent);
+        this.timeSpent = timeSpent.doubleValue();
+
     }
 
     public String getAddress() {
@@ -55,16 +56,11 @@ public class LocationData {
         return timeSpent;
     }
 
-    public void setTimeSpent(long timeSpent) {
-        this.timeSpent = timeSpent;
+    public void setTimeSpent(Long timeSpent) {
+        this.timeSpent = timeSpent.doubleValue();
     }
 
-    /*
-    COLUMN_ADDRESS ("address"),
-    COLUMN_LONGITUDE("longitude"),
-    COLUMN_LATITUDE("latitude"),
-    COLUMN_TIMESPENT("duration"),
-    COLUMN_DATE("dateCreated");
-     */
-
+    public void upDateTimeSpent(double newTime) {
+        this.timeSpent += newTime;
+    }
 }

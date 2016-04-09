@@ -3,15 +3,18 @@
     package="com.andela.motustracker">
 
     <application
+        android:name=".helper.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".helper.App">
-        <meta-data android:name="com.google.android.gms.version"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".MainActivity"
+
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,47 +22,58 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".helper.AppPreferences"
+        <activity
+            android:name=".helper.AppPreferences"
             android:label="@string/title_preferences"
             android:parentActivityName=".MainActivity">
 
         </activity>
-        <service android:name=".service.MotusService" android:exported="false">
 
-        </service>
-        <service android:name=".model.ActivityRecognitionDetector" android:exported="false">
+        <service
+            android:name=".service.MotusService"
+            android:exported="false">
 
         </service>
         <service
+            android:name=".model.ActivityRecognitionDetector"
+            android:exported="false">
+
+        </service>
+
+        <service
             android:name=".service.FetchAddressIntentService"
-            android:exported="false"/>
+            android:exported="false" />
+
         <receiver android:name=".HomeFragment$ReceiveBroadcast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.CUSTOM_INTENT">
-                </action>
+                <action android:name="com.andela.motustracker.CUSTOM_INTENT"></action>
             </intent-filter>
-
         </receiver>
+
         <receiver android:name=".HomeFragment$ReceiveDetectedActivtyBroadCast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.DETECTED_ACTIVITY">
-                </action>
+                <action android:name="com.andela.motustracker.DETECTED_ACTIVITY"></action>
             </intent-filter>
-
         </receiver>
+
         <receiver android:name=".HomeFragment$ReceiveTimerBroadCast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.DETECT_TIMER">
-                </action>
+                <action android:name="com.andela.motustracker.DETECT_TIMER"></action>
             </intent-filter>
 
         </receiver>
 
+        <receiver android:name=".MainActivity$ReceiveLocationSettings">
+            <intent-filter>
+                <action android:name="com.andela.motustracker.LOCATION_SETTINGS"></action>
+            </intent-filter>
+        </receiver>
 
 
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
 </manifest>
