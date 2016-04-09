@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.andela.motustracker.dbParser.DbHandler;
 import com.andela.motustracker.model.LocationData;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +23,11 @@ public class DbManager {
         dbHandler.insertLocationInDb(locationData);
     }
 
-    public Cursor readDataFromDb() {
+    public ArrayList<LocationData> readDataFromDb() {
        return dbHandler.readLocationFromDb();
+    }
+
+    public ArrayList<LocationData> readListBaseOnLocation() {
+        return dbHandler.readListBaseOnLocation();
     }
 }
