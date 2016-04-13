@@ -42,11 +42,7 @@ public class HomeFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-//        latitudeTextView = (TextView)view.findViewById(R.id.id_userLatitudeText);
-//        longitudeTextView = (TextView)view.findViewById(R.id.id_userLongititudeText);
-        addressTextView = (TextView)view.findViewById(R.id.id_userAddress);
         timeTextView = (TextView)view.findViewById(R.id.id_countDownText);
         activityDetected = (TextView) view.findViewById(R.id.activityDetected);
 
@@ -77,7 +73,8 @@ public class HomeFragment extends Fragment{
     }
 
     private void saveButtonState(boolean flag) {
-        SharedPreferences sharedPreferences = AppContext.get().getSharedPreferences(getString
+        SharedPreferences sharedPreferences = AppContext.get().
+                getSharedPreferences(getString
                 (R.string.BUTTON_STATUS), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.button_flag), flag);
@@ -86,7 +83,8 @@ public class HomeFragment extends Fragment{
     }
 
     private boolean isButtonTracking() {
-        SharedPreferences sharedPreferences = AppContext.get().getSharedPreferences(getString
+        SharedPreferences sharedPreferences = AppContext.get().
+                getSharedPreferences(getString
                 (R.string.BUTTON_STATUS), Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(getString(R.string.button_flag),false);
     }
