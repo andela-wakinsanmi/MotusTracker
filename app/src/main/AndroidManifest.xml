@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andela.motustracker">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
     <application
         android:name=".helper.App"
         android:allowBackup="true"
@@ -12,7 +20,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -23,9 +30,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".helper.AppPreferences"
+            android:name=".preference.AppPreferences"
             android:label="@string/title_preferences"
-            android:parentActivityName=".MainActivity">
+            android:screenOrientation="portrait">
 
         </activity>
 
@@ -39,41 +46,38 @@
             android:exported="false">
 
         </service>
-
         <service
             android:name=".service.FetchAddressIntentService"
             android:exported="false" />
 
         <receiver android:name=".HomeFragment$ReceiveBroadcast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.CUSTOM_INTENT"></action>
+                <action android:name="com.andela.motustracker.CUSTOM_INTENT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".HomeFragment$ReceiveDetectedActivtyBroadCast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.DETECTED_ACTIVITY"></action>
+                <action android:name="com.andela.motustracker.DETECTED_ACTIVITY" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".HomeFragment$ReceiveTimerBroadCast">
             <intent-filter>
-                <action android:name="com.andela.motustracker.DETECT_TIMER"></action>
+                <action android:name="com.andela.motustracker.DETECT_TIMER" />
             </intent-filter>
-
         </receiver>
-
         <receiver android:name=".MainActivity$ReceiveLocationSettings">
             <intent-filter>
-                <action android:name="com.andela.motustracker.LOCATION_SETTINGS"></action>
+                <action android:name="com.andela.motustracker.LOCATION_SETTINGS" />
             </intent-filter>
         </receiver>
 
+        <activity android:name=".MapActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCFdZK793VHMgMG7LUxKoY-hLJrooCuZz8"/>
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
 </manifest>

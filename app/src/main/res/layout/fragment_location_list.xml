@@ -10,12 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/id_spinnerView"
-        android:layout_marginBottom="3dp"> </Spinner>
+        android:layout_marginBottom="10dp"> </Spinner>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/id_frag_listView">
 
     </ListView>
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="No Location Recorded Yet"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>

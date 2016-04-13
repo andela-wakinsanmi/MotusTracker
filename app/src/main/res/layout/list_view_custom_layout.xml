@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/wallet_bright_foreground_disabled_holo_light"
+
     android:paddingTop="5dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Latitude : "
+            android:text="Date :              "
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_horizontal" />
         <TextView
@@ -20,49 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="234.120230"
-            android:id="@+id/id_frag_latitude"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Longititude : "
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center_horizontal" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="234.120230"
-            android:id="@+id/id_frag_longitude"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Date : "
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center_horizontal" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=""
+            android:text="hh"
             android:id="@+id/id_frag_date"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
@@ -86,8 +44,16 @@
             android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="30 mins"
+            android:layout_weight="1"
             android:id="@+id/id_frag_timeSpent"
             android:layout_gravity="center_horizontal" />
+        <ImageView
+            android:id="@+id/drawer_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:src="@drawable/ic_navigate_next_black_24dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Address : "
+            android:text="Address :       "
             android:id="@+id/textView2"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_horizontal" />

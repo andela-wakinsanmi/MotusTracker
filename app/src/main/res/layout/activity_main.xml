@@ -2,7 +2,6 @@
 <android.support.v4.widget.DrawerLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,6 +16,7 @@
 
         <include
             layout="@layout/tool_bar"
+            android:id="@+id/id_toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <FrameLayout
@@ -36,7 +36,6 @@
         android:layout_gravity="start"
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/navigation_drawer_header">
-
 
     </android.support.design.widget.NavigationView>
 
