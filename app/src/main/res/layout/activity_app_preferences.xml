@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/app_preference_layout"
-    tools:context=".helper.AppPreferences"
+    tools:context=".preference.AppPreferences"
     android:orientation="vertical">
     <include
         layout="@layout/tool_bar"

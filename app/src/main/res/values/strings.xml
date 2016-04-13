@@ -12,8 +12,8 @@
     <string name="address_found">Address found</string>
     <string name="button_status">button_status</string>
     <string name="button_flag">button_flag</string>
-    <string name="list_by_name">List By Day</string>
-    <string name="list_by_time_spent">List By Time Spent</string>
+    <string name="list_by_name">List By Date</string>
+    <string name="list_by_time_spent">List By Location</string>
 
 
     <string name="details_for_db">details_for_database</string>
