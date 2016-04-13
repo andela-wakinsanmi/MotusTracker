@@ -1,10 +1,11 @@
-package com.andela.motustracker;
+package com.andela.motustracker.fragment;
 
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.andela.motustracker.R;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.service.MotusService;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
@@ -23,8 +25,8 @@ import com.andela.motustracker.helper.OnHomeButtonClickListener;
  */
 public class HomeFragment extends Fragment{
     Button button;
-    static TextView latitudeTextView;
-    static TextView longitudeTextView;
+/*    static TextView latitudeTextView;
+    static TextView longitudeTextView;*/
     static TextView addressTextView;
     static TextView activityDetected;
     static TextView timeTextView;
@@ -42,25 +44,28 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        latitudeTextView = (TextView)view.findViewById(R.id.id_userLatitudeText);
-        longitudeTextView = (TextView)view.findViewById(R.id.id_userLongititudeText);
+//        latitudeTextView = (TextView)view.findViewById(R.id.id_userLatitudeText);
+//        longitudeTextView = (TextView)view.findViewById(R.id.id_userLongititudeText);
         addressTextView = (TextView)view.findViewById(R.id.id_userAddress);
         timeTextView = (TextView)view.findViewById(R.id.id_countDownText);
-        activityDetected = (TextView) view.findViewById(R.id.activityDetetcted);
+        activityDetected = (TextView) view.findViewById(R.id.activityDetected);
 
         button = (Button) view.findViewById(R.id.button);
         String buttonText = isButtonTracking() ? "Stop Tracking" : "Start Tracking";
+        int colour = isButtonTracking() ? Color.RED : Color.parseColor("#43AC45");
         button.setText(buttonText);
+        button.setBackgroundColor(colour);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //onHomeButtonClickListener.startButtonClicked(isButtonOnStart());
                 if (isButtonTracking()) {
                     button.setText("Start Tracking");
+                    button.setBackgroundColor(Color.GREEN);
                     stopService();
                     saveButtonState(false);
                 } else {
                     button.setText("Stop Tracking");
+                    button.setBackgroundColor(Color.RED);
                     startService();
                     saveButtonState(true);
                 }
@@ -94,7 +99,6 @@ public class HomeFragment extends Fragment{
     public void stopService() {
         Intent intent = new Intent(getActivity(),MotusService.class);
         getActivity().stopService(intent);
-
     }
 
     @Override
@@ -111,9 +115,9 @@ public class HomeFragment extends Fragment{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (latitudeTextView != null) {
-                latitudeTextView.setText(intent.getStringExtra("latitude"));
-                longitudeTextView.setText(intent.getStringExtra("longitude"));
+            if (addressTextView != null) {
+                //latitudeTextView.setText(intent.getStringExtra("latitude"));
+                //longitudeTextView.setText(intent.getStringExtra("longitude"));
                 addressTextView.setText(intent.getStringExtra("address"));
             }
         }

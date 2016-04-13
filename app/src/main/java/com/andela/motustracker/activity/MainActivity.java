@@ -1,8 +1,10 @@
-package com.andela.motustracker;
+package com.andela.motustracker.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -13,14 +15,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.andela.motustracker.helper.App;
-import com.andela.motustracker.helper.AppPreferences;
-import com.andela.motustracker.helper.GoogleClient;
+import com.andela.motustracker.R;
+import com.andela.motustracker.fragment.HomeFragment;
+import com.andela.motustracker.fragment.LocationListFragment;
+import com.andela.motustracker.helper.AppContext;
+import com.andela.motustracker.preference.AppPreferences;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
 import com.google.android.gms.common.api.Status;
 
@@ -53,14 +56,24 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
                 switch (item.getItemId()) {
                     case R.id.id_settings_drawer :
-                        createAppPreference();
+                        if(!isButtonTracking()) {
+                            createAppPreference();
+                        } else {
+                            displayErrorDialog();
+                        }
                     break;
                     case R.id.id_home_drawer:
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new HomeFragment());
+                        if(getSupportActionBar() != null) {
+                            getSupportActionBar().setTitle("Home");
+                        }
                         fragmentTransaction.commit();
                         break;
                     case R.id.id_list_drawer :
+                        if(getSupportActionBar() != null) {
+                            getSupportActionBar().setTitle("List");
+                        }
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new LocationListFragment());
                         fragmentTransaction.commit();
@@ -105,8 +118,12 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
         switch(item.getItemId()) {
             case R.id.id_settings_actionBar:
-                //call settings..
-                createAppPreference();
+                if(!isButtonTracking()) {
+                    createAppPreference();
+                } else {
+                    displayErrorDialog();
+                }
+
                 break;
         }
 
@@ -115,13 +132,12 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
     private void createAppPreference() {
         Intent intent = new Intent(this, AppPreferences.class);
-        startActivity(intent);
+        startActivityForResult(intent,20);
     }
 
     private void loadPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String valueSet = sharedPreferences.getString("minimumTime", "");
-        Log.e("MOTUS", valueSet);
         //call the timer from here when this happens....
     }
 
@@ -136,8 +152,6 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
         }
     }
 
-
-    //checking play services
     @Override
     protected void onResume() {
         super.onResume();
@@ -147,12 +161,8 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("waleola", "called MainActivity" );
-
             Status status = intent.getParcelableExtra("status");
             try {
-                // Show the dialog by calling startResolutionForResult(),
-                // and check the result in onActivityResult().
                 status.startResolutionForResult(MainActivity.activity, 200);
             } catch (IntentSender.SendIntentException e) {
                 // Ignore the error.
@@ -160,10 +170,27 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
 
         }
     }
-    public void displaySettings(Status status) {
 
+    private boolean isButtonTracking() {
+        SharedPreferences sharedPreferences = AppContext.get().getSharedPreferences(getString
+                (R.string.BUTTON_STATUS), Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(getString(R.string.button_flag),false);
     }
 
+    private void displayErrorDialog() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        alertDialog.setTitle("OOps!!!");
+        alertDialog.setMessage("You cannot change App settings while Tracking");
+        //alertDialog.setIcon(R.drawable.);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+
+    }
 
 
 }
