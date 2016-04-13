@@ -2,7 +2,6 @@ package com.andela.motustracker.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.andela.motustracker.R;
 import com.andela.motustracker.helper.AppContext;
@@ -18,15 +17,16 @@ public class SharedPreferenceManager {
     private Context context;
     private static SharedPreferenceManager sharedPreferenceManager;
     private SharedPreferences sharedPreferences;
-    private SharedPreferenceManager(){
+
+    private SharedPreferenceManager() {
         context = AppContext.get();
         sharedPreferences = context.getSharedPreferences(
-                context.getString(R.string.details_for_db), Context.MODE_PRIVATE);;
-
+                context.getString(R.string.details_for_db), Context.MODE_PRIVATE);
+        ;
     }
 
     public static SharedPreferenceManager getInstance() {
-        if(sharedPreferenceManager == null) {
+        if (sharedPreferenceManager == null) {
             sharedPreferenceManager = new SharedPreferenceManager();
             return sharedPreferenceManager;
         }
@@ -34,7 +34,6 @@ public class SharedPreferenceManager {
     }
 
     public void setTimeSpent(long timeSpent) {
-
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(context.getString(R.string.time), timeSpent);
         editor.apply();
@@ -42,9 +41,7 @@ public class SharedPreferenceManager {
     }
 
     public long getTimeSpent() {
-        long time = sharedPreferences.getLong(context.getString(R.string.time), 0);
-        Log.d("waleola", "called SharedPreferenceManager.. time .... = " + time);
-        return time;
+        return sharedPreferences.getLong(context.getString(R.string.time), 0);
     }
 
     public void setDate() {
@@ -54,7 +51,6 @@ public class SharedPreferenceManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(context.getString(R.string.date), dateFormat.split(" ")[0]);
         editor.apply();
-
     }
 
     public String getDate() {
@@ -72,7 +68,7 @@ public class SharedPreferenceManager {
         return sharedPreferences.getString(context.getString(R.string.address), "");
     }
 
-    public void  setLatitude(double latitude) {
+    public void setLatitude(double latitude) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(context.getString(R.string.latitude), Double.doubleToLongBits(latitude));
         editor.apply();
@@ -82,7 +78,7 @@ public class SharedPreferenceManager {
         return Double.longBitsToDouble(sharedPreferences.getLong(context.getString(R.string.latitude), 0));
     }
 
-    public void  setLongitude(double longitude) {
+    public void setLongitude(double longitude) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(context.getString(R.string.longitude), Double.doubleToLongBits(longitude));
         editor.apply();
@@ -93,8 +89,15 @@ public class SharedPreferenceManager {
     }
 
     public LocationData getLocationData() {
-        return new LocationData(getAddress(),getDate(),getLatitude(), getLongitude(),
+        return new LocationData(getAddress(), getDate(), getLatitude(), getLongitude(),
                 getTimeSpent());
+    }
+
+    public void clearData() {
+        setLatitude(0);
+        setLongitude(0);
+        setTimeSpent(0);
+        setAddress("");
     }
 
 }
