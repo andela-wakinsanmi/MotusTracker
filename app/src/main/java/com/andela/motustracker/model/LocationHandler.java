@@ -3,7 +3,6 @@ package com.andela.motustracker.model;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.andela.motustracker.helper.LocationRequestHelper;
 import com.andela.motustracker.helper.NotifyServiceLocation;
@@ -17,7 +16,7 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
 
 
     private static final String TAG = "LocationHandler";
-    private Location currentLocation;
+    private static Location currentLocation;
     private GoogleApiClient googleApiClient;
     private Context context;
     private NotifyServiceLocation notifyServiceLocation;
@@ -37,17 +36,12 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
                 .addApi(LocationServices.API)
                 .build();
         googleApiClient.connect();
-        //googleApiClient = GoogleClient.getGoogleApiClient();
         LocationRequestHelper locationRequestHelper = new LocationRequestHelper(googleApiClient);
         locationRequest = locationRequestHelper.createLocationRequest();
     }
 
-    /**
-     * Google api callback methods
-     */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
     @Override
@@ -55,7 +49,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
         try {
             //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            Log.d("waleola","Called Onconnected ..");
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -63,24 +56,11 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
             //callback
             notifyServiceLocation.getLocationCallBack(currentLocation);
         }
-        googleApiClient.disconnect();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         googleApiClient.connect();
     }
-
-   /* @Override
-    public void onLocationChanged(Location location) {
-        currentLocation = location;
-        String mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        notifyServiceLocation.getLocationCallBack(currentLocation);
-    }
-
-    public void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                googleApiClient, this);
-    }*/
 
 }

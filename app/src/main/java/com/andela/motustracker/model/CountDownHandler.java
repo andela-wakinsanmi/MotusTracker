@@ -4,29 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.helper.NotifyServiceLocation;
 import com.andela.motustracker.manager.GeocoderManager;
 import com.andela.motustracker.manager.SharedPreferenceManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Spykins on 02/04/16.
  */
-public class CountDownHandler extends CountDownTimer implements NotifyServiceLocation  {
-    Context context = AppContext.get();
-    long timeSetByUser;
+public class CountDownHandler extends CountDownTimer implements NotifyServiceLocation {
+    private Context context = AppContext.get();
+    private long timeSetByUser;
+    private SharedPreferenceManager sharedPreferenceManager;
 
     public CountDownHandler(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
         timeSetByUser = millisInFuture;
+        sharedPreferenceManager = SharedPreferenceManager.getInstance();
     }
 
     @Override
@@ -37,15 +35,21 @@ public class CountDownHandler extends CountDownTimer implements NotifyServiceLoc
 
     @Override
     public void onFinish() {
-        Log.d("waleola", "called onFinish");
-        Long currentTimeStamp = System.currentTimeMillis()/1000;
+        updateTextViewTime("00:00:00");
+        Date date = new Date();
+        long currentTimeStamp = date.getTime();
+
         Long timeSpentByUser = currentTimeStamp - timeSetByUser;
-        SharedPreferenceManager.getInstance().setTimeSpent(timeSpentByUser);
-        LocationHandler locationHandler = new LocationHandler(AppContext.get(),this);
+        sharedPreferenceManager.setTimeSpent(timeSpentByUser);
+        LocationHandler locationHandler = new LocationHandler(AppContext.get(), this);
     }
 
     @Override
     public void getLocationCallBack(Location location) {
+        sharedPreferenceManager.setDate();
+        sharedPreferenceManager.setLatitude(location.getLatitude());
+        sharedPreferenceManager.setLongitude(location.getLongitude());
+
         GeocoderManager geocoderManager = new GeocoderManager();
         geocoderManager.startIntentService(location);
     }
@@ -56,12 +60,11 @@ public class CountDownHandler extends CountDownTimer implements NotifyServiceLoc
                 TimeUnit.MILLISECONDS.toSeconds(milliseconds) % TimeUnit.MINUTES.toSeconds(1));
     }
 
-    private void updateTextViewTime(String time) {
+    public void updateTextViewTime(String time) {
         Intent intent = new Intent();
         intent.setAction("com.andela.motustracker.DETECT_TIMER");
         intent.putExtra("time", time);
         AppContext.get().sendBroadcast(intent);
     }
-
 
 }
