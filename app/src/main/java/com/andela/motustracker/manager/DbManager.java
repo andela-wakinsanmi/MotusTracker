@@ -24,10 +24,20 @@ public class DbManager {
     }
 
     public ArrayList<LocationData> readDataFromDb() {
-       return dbHandler.readLocationFromDb();
+        dbHandler = new DbHandler();
+        return dbHandler.readLocationFromDb();
     }
 
     public ArrayList<LocationData> readListBaseOnLocation() {
         return dbHandler.readListBaseOnLocation();
     }
+
+    public void deleteAllLocationOccurence(LocationData data) {
+        dbHandler.deleteAllLocationOccurence(data);
+    }
+
+    public void deleteInstanceOfLocation(LocationData data) {
+        dbHandler.deleteFromDatabase(data);
+    }
+
 }
