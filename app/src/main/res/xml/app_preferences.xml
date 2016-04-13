@@ -2,12 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="General" >
-        <EditTextPreference android:title="Tracking Time"
-            android:summary="5 Minutes"
-            android:id="@+id/id_preferenceTime"
+        <com.andela.motustracker.preference.NumberPickerPreference
+            android:defaultValue="5"
             android:key="minimumTime"
-            android:inputType="number"
-            android:defaultValue="5"/>
+            android:summary="5 Minutes"
+            android:title="Tracking Time" />
     </PreferenceCategory>
-
 </PreferenceScreen>
