@@ -41,11 +41,6 @@ public class DbListAdapter extends ArrayAdapter<LocationData> {
         TextView timeSpentTextView = (TextView) view.findViewById(R.id.id_frag_timeSpent);
         TextView dateTextView = (TextView) view.findViewById(R.id.id_frag_date);
         addressTextView.setText(locationData.getAddress());
-
-        TextView latitudeTextView = (TextView) view.findViewById(R.id.id_frag_latitude);
-        TextView longitudeTextView = (TextView) view.findViewById(R.id.id_frag_longitude);
-        latitudeTextView.setText(String.valueOf(locationData.getLatitude()));
-        longitudeTextView.setText(String.valueOf(locationData.getLongitude()));
         timeSpentTextView.setText(timeFormatter((long) locationData.getTimeSpent()));
         dateTextView.setText(locationData.getDate());
         return view;
