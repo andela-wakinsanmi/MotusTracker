@@ -20,8 +20,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,34 +51,34 @@
             android:name=".service.FetchAddressIntentService"
             android:exported="false" />
 
-        <receiver android:name=".HomeFragment$ReceiveBroadcast">
+        <receiver android:name=".fragment.HomeFragment$ReceiveBroadcast">
             <intent-filter>
                 <action android:name="com.andela.motustracker.CUSTOM_INTENT" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".HomeFragment$ReceiveDetectedActivtyBroadCast">
+        <receiver android:name=".fragment.HomeFragment$ReceiveDetectedActivtyBroadCast">
             <intent-filter>
                 <action android:name="com.andela.motustracker.DETECTED_ACTIVITY" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".HomeFragment$ReceiveTimerBroadCast">
+        <receiver android:name=".fragment.HomeFragment$ReceiveTimerBroadCast">
             <intent-filter>
                 <action android:name="com.andela.motustracker.DETECT_TIMER" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".MainActivity$ReceiveLocationSettings">
+        <receiver android:name=".activity.MainActivity$ReceiveLocationSettings">
             <intent-filter>
                 <action android:name="com.andela.motustracker.LOCATION_SETTINGS" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MapActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.MapActivity"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCFdZK793VHMgMG7LUxKoY-hLJrooCuZz8"/>
+            android:value="AIzaSyCFdZK793VHMgMG7LUxKoY-hLJrooCuZz8" />
     </application>
 
 </manifest>
