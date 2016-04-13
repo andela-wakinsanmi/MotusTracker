@@ -1,19 +1,15 @@
 package com.andela.motustracker.dbParser;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.model.LocationData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +43,10 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     public void insertLocationInDb(LocationData locationData) {
-        if(!hasDataInDb(locationData.getDate(),locationData.getAddress())) {
+
+
+        if(!hasDataInDb(locationData)) {
+            SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DbConfig.COLUMN_DATE.getRealName(), locationData.getDate());
             values.put(DbConfig.COLUMN_TIMESPENT.getRealName(), locationData.getTimeSpent());
@@ -55,12 +54,10 @@ public class DbHandler extends SQLiteOpenHelper {
             values.put(DbConfig.COLUMN_LATITUDE.getRealName(), locationData.getLatitude());
             values.put(DbConfig.COLUMN_ADDRESS.getRealName(), locationData.getAddress());
 
-            SQLiteDatabase db = getWritableDatabase();
             db.insert(DbConfig.TABLE_NAME.getRealName(), null, values);
             db.close();
 
         } else {
-            //update value....
             updateDatabase(locationData.getAddress(),locationData.getTimeSpent());
         }
 
@@ -71,11 +68,11 @@ public class DbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         String query = "SELECT * FROM " + DbConfig.TABLE_NAME.getRealName() + " ORDER BY " +
-                "  DATE(" +DbConfig.COLUMN_DATE.getRealName()  + ")  DESC";
+                "  DATE(" +DbConfig.COLUMN_DATE.getRealName()  + ")  ASC";
 
         Cursor cursorHandle = db.rawQuery(query, null);
         cursorHandle.moveToFirst();
-        while (cursorHandle.moveToNext()) {
+        while (!cursorHandle.isAfterLast()) {
             String address = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_ADDRESS.getRealName()));
             double latitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
@@ -86,29 +83,36 @@ public class DbHandler extends SQLiteOpenHelper {
                     DbConfig.COLUMN_TIMESPENT.getRealName()));
             String date = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_DATE.getRealName()));
-
             allLocationInDb.add(new LocationData(address, date, latitude, longititude, timeSpent.longValue()));
+            cursorHandle.moveToNext();
         }
         cursorHandle.close();
         db.close();
         return allLocationInDb;
     }
 
-    public void deleteFromDatabase(String address, double longitude, double latitude, double timeSpent) {
+    public void deleteFromDatabase(LocationData data) {
         SQLiteDatabase sq = getWritableDatabase();
         String query = "DELETE FROM " + DbConfig.TABLE_NAME.getRealName() + " WHERE " +
-                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + address + "' AND " +
-                DbConfig.COLUMN_LONGITUDE.getRealName() + " = " + "'" + longitude + "' AND " +
-                DbConfig.COLUMN_LATITUDE.getRealName() + " = " + "'" + latitude + "' AND " +
-                DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + "'" + timeSpent + "'";
+                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + data.getAddress() + "' AND " +
+                DbConfig.COLUMN_LONGITUDE.getRealName() + " = " + "'" + data.getLongitude() + "' AND " +
+                DbConfig.COLUMN_LATITUDE.getRealName() + " = " + "'" + data.getLatitude() + "' AND " +
+                DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + "'" + data.getTimeSpent() + "'";
         sq.execSQL(query);
     }
 
-    public boolean hasDataInDb(String date, String address) {
+    public void deleteAllLocationOccurence(LocationData data) {
+        SQLiteDatabase sq = getWritableDatabase();
+        String query = "DELETE FROM " + DbConfig.TABLE_NAME.getRealName() + " WHERE " +
+                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + data.getAddress() + "'";
+        sq.execSQL(query);
+    }
+
+    public boolean hasDataInDb(LocationData locationData) {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM "+DbConfig.TABLE_NAME.getRealName() +
-                " WHERE "+DbConfig.COLUMN_ADDRESS.getRealName() +" = '" + address +"'"+
-                " AND " + DbConfig.COLUMN_DATE.getRealName() + " = '" + date + "'";
+                " WHERE "+DbConfig.COLUMN_ADDRESS.getRealName() +" = '" + locationData.getAddress() +"'"+
+                " AND " + DbConfig.COLUMN_DATE.getRealName() + " = '"+ locationData.getDate() + "'";
 
         Cursor cursorHandle = db.rawQuery(query, null);
         if(cursorHandle.getCount() > 0 ) {
@@ -139,7 +143,7 @@ public class DbHandler extends SQLiteOpenHelper {
         Cursor cursorHandle = db.rawQuery(query, null);
 
         cursorHandle.moveToFirst();
-        while (cursorHandle.moveToNext()) {
+        while (!cursorHandle.isAfterLast()) {
             String address = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_ADDRESS.getRealName()));
             double latitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
@@ -155,25 +159,21 @@ public class DbHandler extends SQLiteOpenHelper {
                 Double previousTimeSpent = locationData.getTimeSpent();
                 long newTime = previousTimeSpent.longValue() + timeSpent.longValue();
                 locationData.setTimeSpent(newTime);
-                Log.d("waleola",  "readListBaseOnLocation() previousTime = " + previousTimeSpent + " NewTimw " + newTime);
-                //locationData.upDateTimeSpent(timeSpent);
                 addressAndLocationInfo.put(address,locationData);
             } else {
                 LocationData locationData = new LocationData(address,date,latitude,
                         longititude,timeSpent.longValue());
                 addressAndLocationInfo.put(address,locationData);
             }
-
+            cursorHandle.moveToNext();
         }
         cursorHandle.close();
         db.close();
-
 
         ArrayList<LocationData> list = new ArrayList<>();
         for(Map.Entry<String, LocationData> entry : addressAndLocationInfo.entrySet()){
             list.add(entry.getValue());
         }
-
         return list;
     }
 
