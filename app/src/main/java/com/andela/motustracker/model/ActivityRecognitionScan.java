@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,27 +18,30 @@ public class ActivityRecognitionScan implements GoogleApiClient.ConnectionCallba
     private static final String TAG = "ActivityRecognition";
     private static GoogleApiClient googleApiClient;
     private Context context;
-
+    private PendingIntent callbackIntent;
 
     public ActivityRecognitionScan(Context context) {
         this.context = context;
+        makeConnection();
         if (context == null) {
-            Log.e("null context", "true");
         }
     }
 
-    public void startActivityRecognitionScan() {
+    private void makeConnection() {
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(ActivityRecognition.API)
                 .build();
+    }
+
+    public void startActivityRecognitionScan() {
         googleApiClient.connect();
     }
 
     public void stopActivityRecognitionScan() {
         try {
-            googleApiClient.disconnect();
+            ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(googleApiClient, callbackIntent);
         } catch (IllegalStateException e) {
         }
     }
@@ -47,20 +49,16 @@ public class ActivityRecognitionScan implements GoogleApiClient.ConnectionCallba
     @Override
     public void onConnected(Bundle bundle) {
         Intent intent = new Intent(context, ActivityRecognitionDetector.class);
-        PendingIntent callbackIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        callbackIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(googleApiClient, 0, callbackIntent);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        googleApiClient.connect();
-
     }
-
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed");
     }
 
 }
