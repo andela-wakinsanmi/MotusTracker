@@ -22,6 +22,8 @@ import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.manager.DbManager;
 import com.andela.motustracker.model.LocationData;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,8 +50,9 @@ public class LocationListFragment extends Fragment {
                 R.array.spinnerDropDown, R.layout.spinner_custom_view);
         spinner.setAdapter(spinnerAdapter);
         listView = (ListView) view.findViewById(R.id.id_frag_listView);
+        final ArrayList<LocationData> dataFromDb = dbManager.readDataFromDb();
         listAdapter = new DbListAdapter(getContext(),R.layout.fragment_location_list,
-                R.id.activityDetected, dbManager.readDataFromDb());
+                R.id.activityDetected, dataFromDb);
         listView.setEmptyView(view.findViewById(android.R.id.empty));
         listView.setAdapter(listAdapter);
 
@@ -59,10 +62,11 @@ public class LocationListFragment extends Fragment {
                                     long id) {
                 LocationData itemClicked = listAdapter.getItem(position);
                 Intent intent = new Intent(getContext(), MapActivity.class);
-                intent.putExtra("latitude", itemClicked.getLatitude());
+                /*intent.putExtra("latitude", itemClicked.getLatitude());
                 intent.putExtra("longitude", itemClicked.getLongitude());
-                intent.putExtra("address", itemClicked.getAddress());
-                intent.putExtra("timeSpent", itemClicked.getTimeSpent());
+                intent.putExtra("address", itemClicked.getAddress());*/
+                intent.putExtra("selectedItem", itemClicked);
+                intent.putParcelableArrayListExtra("allData", dataFromDb);
                 startActivityForResult(intent, 10);
             }
         });

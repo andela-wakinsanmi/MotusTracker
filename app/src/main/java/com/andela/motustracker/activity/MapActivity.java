@@ -1,14 +1,14 @@
 package com.andela.motustracker.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.andela.motustracker.R;
+import com.andela.motustracker.model.DistanceCalculator;
+import com.andela.motustracker.model.LocationData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,12 +17,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
+import java.util.ArrayList;
+
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private double longitude;
     private double latitude;
     private Toolbar toolbar;
     private String timeSpent;
     private String address;
+    private ArrayList<LocationData> dataFromDb;
+    private LocationData selectedData;
+    private DistanceCalculator distanceCalculator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +40,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         TextView latitudeTextView = (TextView) findViewById(R.id.id_frag_latitude);
         TextView longitudeTextView = (TextView) findViewById(R.id.id_frag_longitude);
 
-
-
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        latitude = getIntent().getDoubleExtra("latitude", 0);
-        longitude = getIntent().getDoubleExtra("longitude", 0);
-        address = getIntent().getStringExtra("address");
-        timeSpent = String.valueOf(getIntent().getDoubleExtra("timeSpent", 0));
+        selectedData = getIntent().getParcelableExtra("selectedItem");
+        latitude = selectedData.getLatitude();
+        longitude = selectedData.getLongitude();
+        distanceCalculator = new DistanceCalculator(latitude, longitude);
+        address = selectedData.getAddress();
+        //timeSpent = String.valueOf(selectedData.getTimeSpent());
+        dataFromDb = getIntent().getParcelableArrayListExtra("allData");
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        if(latitudeTextView != null && longitudeTextView != null) {
+        if (latitudeTextView != null && longitudeTextView != null) {
             latitudeTextView.setText(String.valueOf(latitude));
             longitudeTextView.setText(String.valueOf(longitude));
         }
@@ -56,7 +63,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -67,7 +74,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng currentLocation = new LatLng(latitude, longitude);
         Marker marker = map.addMarker(new MarkerOptions()
                 .position(currentLocation)
-                .title(address + "\n Time spent : " + timeSpent));
+                .title(address));
         marker.setVisible(true);
         marker.setAlpha(0.8F);
         marker.showInfoWindow();
@@ -75,4 +82,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map.animateCamera(CameraUpdateFactory.zoomIn());
         map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
+
+    public void setUpListView() {
+
+    }
+
+
 }
