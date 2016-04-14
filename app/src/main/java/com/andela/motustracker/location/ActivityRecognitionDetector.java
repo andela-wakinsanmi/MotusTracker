@@ -1,4 +1,4 @@
-package com.andela.motustracker.model;
+package com.andela.motustracker.location;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -80,7 +80,7 @@ public class ActivityRecognitionDetector extends IntentService {
     private void sendBroadcast(String activityDetected) {
         Intent intent = new Intent();
         intent.setAction("com.andela.motustracker.DETECTED_ACTIVITY");
-        intent.putExtra("activityDetected", "Activity\\n" + activityDetected);
+        intent.putExtra("activityDetected", "Activity : " + activityDetected);
         AppContext.get().sendBroadcast(intent);
     }
 

@@ -1,8 +1,8 @@
-package com.andela.motustracker.helper;
+package com.andela.motustracker.location;
 
 import android.content.Intent;
-import android.util.Log;
 
+import com.andela.motustracker.helper.AppContext;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -46,7 +46,6 @@ public class LocationRequestHelper {
                         requestingLocationUpdates = true;
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        Log.d("waleola", "Called checkUserLocationSettings*** LocationSettingsStatusCodes.RESOLUTION_REQUIRED: ..");
 
                         Intent intent = new Intent();
                         intent.setAction("com.andela.motustracker.LOCATION_SETTINGS");

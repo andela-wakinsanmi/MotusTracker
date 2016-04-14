@@ -1,4 +1,4 @@
-package com.andela.motustracker.model;
+package com.andela.motustracker.location;
 
 import android.app.PendingIntent;
 import android.content.Context;
