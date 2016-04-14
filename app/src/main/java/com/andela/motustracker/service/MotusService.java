@@ -46,12 +46,7 @@ public class MotusService extends Service{
         countDownManager.cancel();
         countDownManager.setCountDownManagerNull();
         ActivityRecognitionDetector.resetFlag();
-        clearScreen();
         clearPreferenceData();
-    }
-
-    private void clearScreen() {
-
     }
 
     private void clearPreferenceData() {

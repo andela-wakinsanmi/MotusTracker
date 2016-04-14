@@ -114,8 +114,6 @@ public class HomeFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
             if (addressTextView != null) {
-                //latitudeTextView.setText(intent.getStringExtra("latitude"));
-                //longitudeTextView.setText(intent.getStringExtra("longitude"));
                 addressTextView.setText(intent.getStringExtra("address"));
             }
         }
