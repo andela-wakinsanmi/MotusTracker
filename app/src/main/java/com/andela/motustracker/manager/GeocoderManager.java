@@ -9,7 +9,7 @@ import android.os.ResultReceiver;
 
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.helper.Constants;
-import com.andela.motustracker.service.FetchAddressIntentService;
+import com.andela.motustracker.service.FetchAddressService;
 
 /**
  * Created by Spykins on 02/04/16.
@@ -22,7 +22,7 @@ public class GeocoderManager {
 
     public void startIntentService(Location location) {
         this.location = location;
-        Intent intent = new Intent(AppContext.get(), FetchAddressIntentService.class);
+        Intent intent = new Intent(AppContext.get(), FetchAddressService.class);
         resultReceiver = new AddressResultReceiver(new Handler());
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);

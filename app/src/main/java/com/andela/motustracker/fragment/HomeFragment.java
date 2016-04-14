@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment{
             public void onClick(View v) {
                 if (isButtonTracking()) {
                     button.setText("Start Tracking");
-                    button.setBackgroundColor(Color.GREEN);
+                    button.setBackgroundColor(Color.parseColor("#43AC45"));
                     stopService();
                     saveButtonState(false);
                 } else {

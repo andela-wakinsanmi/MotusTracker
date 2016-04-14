@@ -43,12 +43,12 @@
 
         </service>
         <service
-            android:name=".model.ActivityRecognitionDetector"
+            android:name=".location.ActivityRecognitionDetector"
             android:exported="false">
 
         </service>
         <service
-            android:name=".service.FetchAddressIntentService"
+            android:name=".service.FetchAddressService"
             android:exported="false" />
 
         <receiver android:name=".fragment.HomeFragment$ReceiveBroadcast">

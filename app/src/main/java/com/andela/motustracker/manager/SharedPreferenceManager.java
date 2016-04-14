@@ -89,6 +89,9 @@ public class SharedPreferenceManager {
     }
 
     public LocationData getLocationData() {
+        if(getAddress().equals("") || getAddress() == null) {
+            setAddress(AppContext.get().getString(R.string.location_unknown));
+        }
         return new LocationData(getAddress(), getDate(), getLatitude(), getLongitude(),
                 getTimeSpent());
     }

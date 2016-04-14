@@ -6,7 +6,7 @@ import android.location.Location;
 import android.os.CountDownTimer;
 
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.helper.NotifyServiceLocation;
+import com.andela.motustracker.location.NotifyServiceLocation;
 import com.andela.motustracker.manager.GeocoderManager;
 import com.andela.motustracker.manager.SharedPreferenceManager;
 

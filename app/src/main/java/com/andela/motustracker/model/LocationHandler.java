@@ -4,8 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 
-import com.andela.motustracker.helper.LocationRequestHelper;
-import com.andela.motustracker.helper.NotifyServiceLocation;
+import com.andela.motustracker.location.LocationRequestHelper;
+import com.andela.motustracker.location.NotifyServiceLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;

@@ -2,20 +2,14 @@ package com.andela.motustracker.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.helper.NotifyServiceLocation;
 import com.andela.motustracker.manager.CountDownManager;
 import com.andela.motustracker.manager.SharedPreferenceManager;
-import com.andela.motustracker.model.ActivityRecognitionDetector;
-import com.andela.motustracker.model.ActivityRecognitionScan;
-import com.andela.motustracker.model.DistanceCalculator;
-import com.andela.motustracker.model.LocationHandler;
-import com.andela.motustracker.model.MockData;
+import com.andela.motustracker.location.ActivityRecognitionDetector;
+import com.andela.motustracker.location.ActivityRecognitionScan;
 
 /**
  * Created by Spykins on 30/03/16.

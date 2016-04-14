@@ -27,7 +27,7 @@ import com.andela.motustracker.preference.AppPreferences;
 import com.andela.motustracker.helper.OnHomeButtonClickListener;
 import com.google.android.gms.common.api.Status;
 
-public class MainActivity extends AppCompatActivity implements OnHomeButtonClickListener{
+public class MainActivity extends AppCompatActivity{
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -139,17 +139,6 @@ public class MainActivity extends AppCompatActivity implements OnHomeButtonClick
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String valueSet = sharedPreferences.getString("minimumTime", "");
         //call the timer from here when this happens....
-    }
-
-    @Override
-    public void startButtonClicked(boolean isButtonOnStart) {
-        //start or stop service
-        if(isButtonOnStart) {
-            //start service
-
-        } else {
-            //stop service
-        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.andela.motustracker.activity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.andela.motustracker.R;
+import com.andela.motustracker.manager.GeocoderManager;
 import com.andela.motustracker.model.DistanceCalculator;
 import com.andela.motustracker.model.LocationData;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,7 +31,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LocationData selectedData;
     private DistanceCalculator distanceCalculator;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         longitude = selectedData.getLongitude();
         distanceCalculator = new DistanceCalculator(latitude, longitude);
         address = selectedData.getAddress();
-        //timeSpent = String.valueOf(selectedData.getTimeSpent());
+        if(address.equals(this.getResources().getString(R.string.location_unknown))) {
+            attemptToFetchAndUpdateDb();
+        }
         dataFromDb = getIntent().getParcelableArrayListExtra("allData");
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -83,9 +86,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 
-    public void setUpListView() {
-
+    private void attemptToFetchAndUpdateDb() {
+        Location targetLocation = new Location("");
+        targetLocation.setLatitude(latitude);
+        targetLocation.setLongitude(longitude);
+        GeocoderManager geocoderManager = new GeocoderManager();
+        geocoderManager.startIntentService(targetLocation);
     }
-
 
 }
