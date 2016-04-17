@@ -27,7 +27,6 @@ public class NumberPickerPreference extends DialogPreference implements Preferen
         super(context, attrs);
         setDialogLayoutResource(R.layout.number_picker);
         setOnPreferenceChangeListener(this);
-
     }
 
     @Override

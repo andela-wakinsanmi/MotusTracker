@@ -25,8 +25,6 @@ import com.andela.motustracker.helper.OnHomeButtonClickListener;
  */
 public class HomeFragment extends Fragment{
     Button button;
-/*    static TextView latitudeTextView;
-    static TextView longitudeTextView;*/
     static TextView addressTextView;
     static TextView activityDetected;
     static TextView timeTextView;
@@ -36,7 +34,6 @@ public class HomeFragment extends Fragment{
 
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     @Override
