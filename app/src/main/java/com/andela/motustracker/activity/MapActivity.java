@@ -25,7 +25,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private double longitude;
     private double latitude;
     private Toolbar toolbar;
-    private String timeSpent;
     private String address;
     private ArrayList<LocationData> dataFromDb;
     private LocationData selectedData;

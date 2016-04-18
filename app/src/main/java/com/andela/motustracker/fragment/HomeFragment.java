@@ -1,6 +1,5 @@
 package com.andela.motustracker.fragment;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import com.andela.motustracker.R;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.service.MotusService;
-import com.andela.motustracker.helper.OnHomeButtonClickListener;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,11 +25,6 @@ public class HomeFragment extends Fragment{
     static TextView addressTextView;
     static TextView activityDetected;
     static TextView timeTextView;
-
-    BroadcastReceiver receiver;
-    OnHomeButtonClickListener onHomeButtonClickListener;
-
-
     public HomeFragment() {
     }
 
@@ -66,7 +58,6 @@ public class HomeFragment extends Fragment{
         });
 
         return view ;
-
     }
 
     private void saveButtonState(boolean flag) {
@@ -98,11 +89,6 @@ public class HomeFragment extends Fragment{
 
     @Override
     public void onAttach(Context context) {
-        try{
-            onHomeButtonClickListener = (OnHomeButtonClickListener) context;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         super.onAttach(context);
     }
 

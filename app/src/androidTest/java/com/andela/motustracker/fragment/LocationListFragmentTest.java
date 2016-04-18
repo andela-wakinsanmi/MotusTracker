@@ -6,25 +6,16 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.andela.motustracker.R;
 import com.andela.motustracker.activity.MainActivity;
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.model.LocationData;
 import com.andela.motustracker.model.MockData;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Created by Spykins on 14/04/16.

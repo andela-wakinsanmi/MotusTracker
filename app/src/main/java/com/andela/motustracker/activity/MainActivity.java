@@ -24,7 +24,6 @@ import com.andela.motustracker.fragment.HomeFragment;
 import com.andela.motustracker.fragment.LocationListFragment;
 import com.andela.motustracker.helper.AppContext;
 import com.andela.motustracker.preference.AppPreferences;
-import com.andela.motustracker.helper.OnHomeButtonClickListener;
 import com.google.android.gms.common.api.Status;
 
 public class MainActivity extends AppCompatActivity{
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        //synchronize it here
         actionBarDrawerToggle.syncState();
     }
 
@@ -123,7 +121,6 @@ public class MainActivity extends AppCompatActivity{
                 } else {
                     displayErrorDialog();
                 }
-
                 break;
         }
 
@@ -138,7 +135,6 @@ public class MainActivity extends AppCompatActivity{
     private void loadPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String valueSet = sharedPreferences.getString("minimumTime", "");
-        //call the timer from here when this happens....
     }
 
     @Override
@@ -153,10 +149,7 @@ public class MainActivity extends AppCompatActivity{
             Status status = intent.getParcelableExtra("status");
             try {
                 status.startResolutionForResult(MainActivity.activity, 200);
-            } catch (IntentSender.SendIntentException e) {
-                // Ignore the error.
-            }
-
+            } catch (IntentSender.SendIntentException e) {}
         }
     }
 
@@ -170,7 +163,6 @@ public class MainActivity extends AppCompatActivity{
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
         alertDialog.setTitle("OOps!!!");
         alertDialog.setMessage("You cannot change App settings while Tracking");
-        //alertDialog.setIcon(R.drawable.);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -178,7 +170,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         alertDialog.show();
-
     }
 
 

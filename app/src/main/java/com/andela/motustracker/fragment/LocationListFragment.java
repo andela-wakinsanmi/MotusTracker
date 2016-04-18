@@ -35,7 +35,6 @@ public class LocationListFragment extends Fragment {
     private boolean isLocationSortSet;
     private DbManager dbManager;
 
-
     public LocationListFragment() {
     }
 
@@ -62,9 +61,6 @@ public class LocationListFragment extends Fragment {
                                     long id) {
                 LocationData itemClicked = listAdapter.getItem(position);
                 Intent intent = new Intent(getContext(), MapActivity.class);
-                /*intent.putExtra("latitude", itemClicked.getLatitude());
-                intent.putExtra("longitude", itemClicked.getLongitude());
-                intent.putExtra("address", itemClicked.getAddress());*/
                 intent.putExtra("selectedItem", itemClicked);
                 intent.putParcelableArrayListExtra("allData", dataFromDb);
                 startActivityForResult(intent, 10);
@@ -105,7 +101,6 @@ public class LocationListFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -142,7 +137,6 @@ public class LocationListFragment extends Fragment {
             }
         });
         alert.show();
-
     }
 
 }

@@ -13,7 +13,7 @@ public enum DbConfig {
     COLUMN_TIMESPENT("duration"),
     COLUMN_DATE("dateCreated");
 
-    private DbConfig(String realName){
+    DbConfig(String realName){
         this.realName = realName;
     }
 

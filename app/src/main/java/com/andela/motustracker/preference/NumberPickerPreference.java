@@ -60,9 +60,7 @@ public class NumberPickerPreference extends DialogPreference implements Preferen
     }
 
     @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-    }
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {}
 
     public void setTitle(CharSequence title) {
         super.setTitle(title);

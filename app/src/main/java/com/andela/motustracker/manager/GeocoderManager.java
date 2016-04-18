@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.helper.Constants;
+import com.andela.motustracker.helper.GeocoderConstants;
 import com.andela.motustracker.service.FetchAddressService;
 
 /**
@@ -24,8 +24,8 @@ public class GeocoderManager {
         this.location = location;
         Intent intent = new Intent(AppContext.get(), FetchAddressService.class);
         resultReceiver = new AddressResultReceiver(new Handler());
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+        intent.putExtra(GeocoderConstants.RECEIVER.getRealName(), resultReceiver);
+        intent.putExtra(GeocoderConstants.LOCATION_DATA_EXTRA.getRealName(), location);
         AppContext.get().startService(intent);
     }
 
@@ -38,8 +38,8 @@ public class GeocoderManager {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
 
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                address = resultData.getString(Constants.RESULT_DATA_KEY);
+            if (resultCode == Integer.parseInt(GeocoderConstants.SUCCESS_RESULT.getRealName())) {
+                address = resultData.getString(GeocoderConstants.RESULT_DATA_KEY.getRealName());
                 sendBroadcast();
                 addDataToSharedPreference();
             }

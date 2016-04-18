@@ -22,7 +22,6 @@ public class SharedPreferenceManager {
         context = AppContext.get();
         sharedPreferences = context.getSharedPreferences(
                 context.getString(R.string.details_for_db), Context.MODE_PRIVATE);
-        ;
     }
 
     public static SharedPreferenceManager getInstance() {

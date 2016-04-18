@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  * Created by Spykins on 02/04/16.
  */
 public class CountDownHandler extends CountDownTimer implements NotifyServiceLocation {
-    private Context context = AppContext.get();
     private long timeSetByUser;
     private SharedPreferenceManager sharedPreferenceManager;
 

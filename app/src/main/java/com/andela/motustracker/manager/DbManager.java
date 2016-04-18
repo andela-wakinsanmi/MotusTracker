@@ -1,11 +1,7 @@
 package com.andela.motustracker.manager;
 
-import android.database.Cursor;
-
 import com.andela.motustracker.dbParser.DbHandler;
 import com.andela.motustracker.model.LocationData;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +12,6 @@ public class DbManager {
 
     public DbManager() {
         dbHandler = new DbHandler();
-
     }
 
     public void insertIntoDb(LocationData locationData) {

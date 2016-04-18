@@ -29,7 +29,6 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     }
 
     public synchronized void prepareService() {
-        //GoogleClient.getInstance(context, this, this);
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -47,13 +46,11 @@ public class LocationHandler implements GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onConnected(Bundle arg0) {
         try {
-            //LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
         if (currentLocation != null) {
-            //callback
             notifyServiceLocation.getLocationCallBack(currentLocation);
         }
     }

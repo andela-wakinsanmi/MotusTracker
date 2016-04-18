@@ -11,7 +11,7 @@ import android.text.TextUtils;
 
 import com.andela.motustracker.R;
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.helper.Constants;
+import com.andela.motustracker.helper.GeocoderConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,8 +37,8 @@ public class FetchAddressService extends IntentService {
         String errorMessage = "";
 
         location = intent.getParcelableExtra(
-                Constants.LOCATION_DATA_EXTRA);
-        resultReceiver = intent.getParcelableExtra(Constants.RECEIVER);
+                GeocoderConstants.LOCATION_DATA_EXTRA.getRealName());
+        resultReceiver = intent.getParcelableExtra(GeocoderConstants.RECEIVER.getRealName());
         List<Address> addresses = null;
 
         try {
@@ -51,29 +51,29 @@ public class FetchAddressService extends IntentService {
         } catch (IllegalArgumentException illegalArgumentException) {
             errorMessage = getString(R.string.invalid_lat_long_used);
         }
-        if (addresses == null || addresses.size()  == 0) {
+        if (addresses == null || addresses.size() == 0) {
             if (errorMessage.isEmpty()) {
                 errorMessage = getString(R.string.no_address_found);
             }
             sendBroadcast(errorMessage);
-            deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
+            deliverResultToReceiver(Integer.parseInt(GeocoderConstants.
+                    FAILURE_RESULT.getRealName()), errorMessage);
 
         } else {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
-            for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+            for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
 
-            deliverResultToReceiver(Constants.SUCCESS_RESULT,
-                    TextUtils.join(System.getProperty("line.separator"),
-                            addressFragments));
+            deliverResultToReceiver(Integer.parseInt(GeocoderConstants.SUCCESS_RESULT.getRealName()),
+                    TextUtils.join(System.getProperty("line.separator"), addressFragments));
         }
     }
 
     private void deliverResultToReceiver(int resultCode, String message) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.RESULT_DATA_KEY, message);
+        bundle.putString(GeocoderConstants.RESULT_DATA_KEY.getRealName(), message);
         resultReceiver.send(resultCode, bundle);
     }
 
