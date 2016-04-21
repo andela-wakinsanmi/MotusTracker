@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/id_spinnerView"
-        android:layout_marginBottom="10dp"> </Spinner>
+        android:layout_margin="20dp"> </Spinner>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

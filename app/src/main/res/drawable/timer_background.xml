@@ -13,7 +13,7 @@
     </item>
     <item>
         <shape android:shape="oval">
-            <stroke android:width="5dp" android:color="@color/primary_text"/>
+            <stroke android:width="5dp" android:color="#FFFFFF"/>
             <size android:height="25dp" android:width="25dp"/>
         </shape>
     </item>

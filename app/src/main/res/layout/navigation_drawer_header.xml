@@ -5,24 +5,28 @@
     android:background="@color/colorPrimary">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/header_logo"
+        android:layout_marginRight="5dp"
         android:id="@+id/imageView" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/header_title"
+        android:textColor="#FFFFFF"
         android:layout_toRightOf="@id/imageView"
         android:id="@+id/id_header_title"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:layout_marginTop="10dp"/>
+        android:textSize="24dp"
+        android:layout_marginTop="15dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView"
+        android:textColor="#FFFFFF"
+        android:textSize="12dp"
         android:layout_below="@id/id_header_title"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:text="@string/header_detail"/>
 
 </RelativeLayout>

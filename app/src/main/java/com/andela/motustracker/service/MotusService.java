@@ -10,6 +10,7 @@ import com.andela.motustracker.manager.CountDownManager;
 import com.andela.motustracker.manager.SharedPreferenceManager;
 import com.andela.motustracker.location.ActivityRecognitionDetector;
 import com.andela.motustracker.location.ActivityRecognitionScan;
+import com.andela.motustracker.model.MockData;
 
 /**
  * Created by Spykins on 30/03/16.
