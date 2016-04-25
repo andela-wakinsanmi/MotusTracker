@@ -40,7 +40,9 @@ public class DbListAdapter extends ArrayAdapter<LocationData> {
         TextView addressTextView = (TextView) view.findViewById(R.id.id_frag_address);
         TextView timeSpentTextView = (TextView) view.findViewById(R.id.id_frag_timeSpent);
         TextView dateTextView = (TextView) view.findViewById(R.id.id_frag_date);
-        addressTextView.setText(locationData.getAddress());
+        String message = locationData.getAddress();
+        message=message.replaceAll("[\r\n]+", ", ");
+        addressTextView.setText(message);
         timeSpentTextView.setText(timeFormatter((long) locationData.getTimeSpent()));
         dateTextView.setText(locationData.getDate());
         return view;
