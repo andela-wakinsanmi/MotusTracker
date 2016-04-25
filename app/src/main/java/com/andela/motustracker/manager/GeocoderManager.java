@@ -19,9 +19,11 @@ public class GeocoderManager {
     private AddressResultReceiver resultReceiver;
     private Location location;
     private String address;
-
-    public void startIntentService(Location location) {
+    public GeocoderManager(Location location) {
         this.location = location;
+    }
+
+    public void startIntentService() {
         Intent intent = new Intent(AppContext.get(), FetchAddressService.class);
         resultReceiver = new AddressResultReceiver(new Handler());
         intent.putExtra(GeocoderConstants.RECEIVER.getRealName(), resultReceiver);

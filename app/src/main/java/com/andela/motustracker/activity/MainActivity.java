@@ -27,11 +27,12 @@ import com.andela.motustracker.preference.AppPreferences;
 import com.google.android.gms.common.api.Status;
 
 public class MainActivity extends AppCompatActivity{
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    NavigationView navigationView;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
     private static Activity activity;
+    private String valueSet;
 
     android.support.v4.app.FragmentTransaction fragmentTransaction;
 
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void loadPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String valueSet = sharedPreferences.getString("minimumTime", "");
+        valueSet = sharedPreferences.getString("minimumTime", "");
     }
 
     @Override

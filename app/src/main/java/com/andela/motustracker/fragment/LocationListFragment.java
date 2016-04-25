@@ -119,7 +119,7 @@ public class LocationListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(isLocationSortSet) {
-                    dbManager.deleteAllLocationOccurence(listAdapter.getItem(position));
+                    dbManager.deleteAllLocationOccurrences(listAdapter.getItem(position));
                     listAdapter.remove(listAdapter.getItem(position));
                 } else {
                     dbManager.deleteInstanceOfLocation(listAdapter.getItem(position));

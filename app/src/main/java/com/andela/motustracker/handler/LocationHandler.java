@@ -1,4 +1,4 @@
-package com.andela.motustracker.model;
+package com.andela.motustracker.handler;
 
 import android.content.Context;
 import android.location.Location;

@@ -1,6 +1,5 @@
-package com.andela.motustracker.model;
+package com.andela.motustracker.handler;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.CountDownTimer;
@@ -49,8 +48,8 @@ public class CountDownHandler extends CountDownTimer implements NotifyServiceLoc
         sharedPreferenceManager.setLatitude(location.getLatitude());
         sharedPreferenceManager.setLongitude(location.getLongitude());
 
-        GeocoderManager geocoderManager = new GeocoderManager();
-        geocoderManager.startIntentService(location);
+        GeocoderManager geocoderManager = new GeocoderManager(location);
+        geocoderManager.startIntentService();
     }
 
     private String timeFormatter(long milliseconds) {

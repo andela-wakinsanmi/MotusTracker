@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.andela.motustracker.helper.AppContext;
-import com.andela.motustracker.model.CountDownHandler;
+import com.andela.motustracker.handler.CountDownHandler;
 import com.andela.motustracker.model.LocationData;
 
 import java.util.Date;
@@ -40,21 +40,25 @@ public class CountDownManager {
     public void cancel() {
         countDownHandler.updateTextViewTime("00:00:00");
         countDownHandler.cancel();
-        Date date = new Date();
-        long currentTimeStamp = date.getTime();
         if (hasTimeInSharedPreference()) {
-            long previousSavedTime = sharedPreferenceManager.getTimeSpent();
-            long timeSpentInLocation = currentTimeStamp - previousSavedTime;
-            sharedPreferenceManager.setTimeSpent(timeSpentInLocation);
-            DbManager dbManager = new DbManager();
-            LocationData locationData = sharedPreferenceManager.getLocationData();
-            dbManager.insertIntoDb(locationData);
-            sharedPreferenceManager.clearData();
+            saveInDatabase();
         }
     }
 
     private boolean hasTimeInSharedPreference() {
         return sharedPreferenceManager.getTimeSpent() != 0;
+    }
+
+    private void saveInDatabase() {
+        Date date = new Date();
+        long currentTimeStamp = date.getTime();
+        long previousSavedTime = sharedPreferenceManager.getTimeSpent();
+        long timeSpentInLocation = currentTimeStamp - previousSavedTime;
+        sharedPreferenceManager.setTimeSpent(timeSpentInLocation);
+        DbManager dbManager = new DbManager();
+        LocationData locationData = sharedPreferenceManager.getLocationData();
+        dbManager.insertIntoDb(locationData);
+        sharedPreferenceManager.clearData();
     }
 
     public void setCountDownManagerNull() {

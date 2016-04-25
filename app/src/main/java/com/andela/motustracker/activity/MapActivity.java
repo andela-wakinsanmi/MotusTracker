@@ -89,8 +89,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Location targetLocation = new Location("");
         targetLocation.setLatitude(latitude);
         targetLocation.setLongitude(longitude);
-        GeocoderManager geocoderManager = new GeocoderManager();
-        geocoderManager.startIntentService(targetLocation);
+        GeocoderManager geocoderManager = new GeocoderManager(targetLocation);
+        geocoderManager.startIntentService();
     }
 
 }

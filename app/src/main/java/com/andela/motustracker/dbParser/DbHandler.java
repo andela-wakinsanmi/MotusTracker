@@ -57,7 +57,7 @@ public class DbHandler extends SQLiteOpenHelper {
             db.close();
 
         } else {
-            updateDatabase(locationData.getAddress(),locationData.getTimeSpent());
+            updateDatabase(locationData.getAddress(),locationData.getTimeSpent(), locationData.getDate());
         }
 
     }
@@ -81,12 +81,13 @@ public class DbHandler extends SQLiteOpenHelper {
         return false;
     }
 
-    public void updateDatabase(String address, Double time) {
+    public void updateDatabase(String address, Double time, String date) {
         double totalTime = time + timeSpent;
         SQLiteDatabase sq = getWritableDatabase();
         String query = "UPDATE " + DbConfig.TABLE_NAME.getRealName() + " " + "SET " +
                 DbConfig.COLUMN_TIMESPENT.getRealName() + " = " + totalTime + " WHERE " +
-                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + address + "'";
+                DbConfig.COLUMN_ADDRESS.getRealName() + " = " + "'" + address + "'" + " AND " +
+                DbConfig.COLUMN_DATE.getRealName() + " = '"+ date + "'";
         sq.execSQL(query);
     }
 
@@ -105,13 +106,13 @@ public class DbHandler extends SQLiteOpenHelper {
                     DbConfig.COLUMN_ADDRESS.getRealName()));
             double latitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_LATITUDE.getRealName()));
-            double longititude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+            double longitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_LONGITUDE.getRealName()));
             Double timeSpent = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_TIMESPENT.getRealName()));
             String date = cursorHandle.getString(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_DATE.getRealName()));
-            allLocationInDb.add(new LocationData(address, date, latitude, longititude, timeSpent.longValue()));
+            allLocationInDb.add(new LocationData(address, date, latitude, longitude, timeSpent.longValue()));
             cursorHandle.moveToNext();
         }
         cursorHandle.close();
@@ -148,7 +149,7 @@ public class DbHandler extends SQLiteOpenHelper {
                     DbConfig.COLUMN_ADDRESS.getRealName()));
             double latitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_LATITUDE.getRealName()));
-            double longititude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
+            double longitude = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_LONGITUDE.getRealName()));
             Double timeSpent = cursorHandle.getDouble(cursorHandle.getColumnIndex(
                     DbConfig.COLUMN_TIMESPENT.getRealName()));
@@ -162,7 +163,7 @@ public class DbHandler extends SQLiteOpenHelper {
                 addressAndLocationInfo.put(address,locationData);
             } else {
                 LocationData locationData = new LocationData(address,date,latitude,
-                        longititude,timeSpent.longValue());
+                        longitude,timeSpent.longValue());
                 addressAndLocationInfo.put(address,locationData);
             }
             cursorHandle.moveToNext();

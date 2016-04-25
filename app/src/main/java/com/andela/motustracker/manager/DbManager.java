@@ -27,7 +27,7 @@ public class DbManager {
         return dbHandler.readListBaseOnLocation();
     }
 
-    public void deleteAllLocationOccurence(LocationData data) {
+    public void deleteAllLocationOccurrences(LocationData data) {
         dbHandler.deleteAllLocationOccurence(data);
     }
 
