@@ -33,47 +33,22 @@ public class ActivityRecognitionDetector extends IntentService {
     }
 
     private void activityType(int detected_activity_type) {
-        String activityDetected = null;
+        String activityDetected;
 
-        switch (detected_activity_type) {
-            case DetectedActivity.IN_VEHICLE:
-                countDownManager.cancel();
-                hasStarted = false;
-                activityDetected = "User in Vehicle";
-                break;
-            case DetectedActivity.ON_BICYCLE:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "User on Bicycle";
-                break;
-            case DetectedActivity.ON_FOOT:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "User on Foot";
-                break;
-            case DetectedActivity.RUNNING:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "User is Running";
-                break;
-            case DetectedActivity.WALKING:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "User is walking";
-                break;
-            case DetectedActivity.UNKNOWN:
-                hasStarted = false;
-                countDownManager.cancel();
-                activityDetected = "unknown";
-                break;
-            case DetectedActivity.STILL:
-            case DetectedActivity.TILTING:
-                if (!hasStarted) {
-                    countDownManager.start();
-                    hasStarted = true;
-                }
-                activityDetected = "User is standing still";
+        if(detected_activity_type == DetectedActivity.TILTING ||
+                detected_activity_type == DetectedActivity.STILL) {
+            if (!hasStarted) {
+                countDownManager.start();
+                hasStarted = true;
+            }
+            activityDetected = "User is standing still";
+
+        } else {
+            countDownManager.cancel();
+            hasStarted = false;
+            activityDetected = "User is Moving";
         }
+
         sendBroadcast(activityDetected);
     }
 

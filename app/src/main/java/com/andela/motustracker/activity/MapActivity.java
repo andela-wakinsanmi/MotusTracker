@@ -50,6 +50,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         longitude = selectedData.getLongitude();
         distanceCalculator = new DistanceCalculator(latitude, longitude);
         address = selectedData.getAddress();
+        address = address.replaceAll("[\r\n]+", ", ");
+
         if(address.equals(this.getResources().getString(R.string.location_unknown))) {
             attemptToFetchAndUpdateDb();
         }
